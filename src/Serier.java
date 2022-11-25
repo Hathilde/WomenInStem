@@ -5,7 +5,7 @@ public class Serier extends Medier {
 
     Serier (String title, String year, List <String> genre, String rating ){
         super(title, year, genre, rating);
-        this.episoder = episoder;
+        this.episoder = episoder; //instansiere episoder
         this.sæsoner = sæsoner;
     }
 
