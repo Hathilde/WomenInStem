@@ -7,11 +7,15 @@ import java.util.List;
         private List<String> genre;
         private String rating;
 
-        Medier (String title, String year, List <String> genre, String rating ){
+        private String imgPath;
+
+        Medier (String title, String year, List <String> genre, String rating, String imgPath ){
             this.title = title;
             this.year = year;
             this.genre = genre; //new ArrayList<>();
             this.rating = rating;
+            this.imgPath = imgPath;
+
 
         }
 
@@ -29,6 +33,12 @@ import java.util.List;
 
         public String getTitle() {
             return title;
+        }
+
+        // Lav setter evt.
+
+        public String getImgPath() {
+            return imgPath;
         }
     }
 

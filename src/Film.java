@@ -1,8 +1,9 @@
 import java.util.*;
 public class Film extends Medier {
 
-    Film (String title, String year, List <String> genre, String rating ){
-        super(title, year, genre, rating);
+    Film (String title, String year, List <String> genre, String rating, String imgPath){
+
+        super(title, year, genre, rating, imgPath);
     }
 
     @Override

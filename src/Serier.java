@@ -1,20 +1,27 @@
 import java.util.*;
 public class Serier extends Medier {
-    int episoder;
-    int sæsoner;
+   // int episoder;
+   // int sæsoner;
+    String seasonsAndEpisodes;
 
-    Serier (String title, String year, List <String> genre, String rating ){
-        super(title, year, genre, rating);
-        this.episoder = episoder; //instansiere episoder
-        this.sæsoner = sæsoner;
+    Serier (String title, String year, List <String> genre, String rating, String imgPath, String seasonsAndEpisodes){
+        super(title, year, genre, rating, imgPath);
+       // this.episoder = episoder; //instansiere episoder
+       // this.sæsoner = sæsoner;
+        this.seasonsAndEpisodes = seasonsAndEpisodes;
     }
 
-    public int getEpisoder() {
-        return episoder;
-    }
+    public String getSeasonsAndEpisodes() {
+        return seasonsAndEpisodes;
 
-    public int getSæsoner() {
-        return sæsoner;
+
+    }
+    @Override
+    public String toString(){
+        return "Titlen er " + getTitle() + ". Årene den er lavet er"
+                + getYear() + ". Genren er " + getGenre() + ". IMDB-ratingen er"
+                + getRating() + "og serier: " + getSeasonsAndEpisodes();
+
     }
 
 }
