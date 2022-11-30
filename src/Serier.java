@@ -20,7 +20,7 @@ public class Serier extends Medier {
     public String toString(){
         return "Titlen er " + getTitle() + ". Årene den er lavet er"
                 + getYear() + ". Genren er " + getGenre() + ". IMDB-ratingen er"
-                + getRating() + "og serier: " + getSeasonsAndEpisodes();
+                + getRating() + " og serier: " + getSeasonsAndEpisodes();
 
     }
 
