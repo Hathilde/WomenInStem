@@ -3,12 +3,10 @@ import org.junit.Test;
 
 
 public class Read {
- 
 
     @Test
     public void testListsOfMedia() {
         ReadData dataReader = new ReadData("hej");
-
 
     }
     @Test
@@ -19,10 +17,10 @@ public class Read {
         dataReaderSerier.reader();
         // assert(dataReaderFilm.getSortedMediaObjects().get(99), "test");
 
-        System.out.println();
+
         System.out.println(dataReaderFilm.getSortedMediaObjects().get(0));
 
-        System.out.println(dataReaderSerier.getSortedMediaObjects().get(10));
+        System.out.println(dataReaderSerier.getSortedMediaObjects().get(0));
 
 
     }

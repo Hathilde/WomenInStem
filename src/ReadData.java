@@ -31,16 +31,21 @@ public class ReadData {
 
         while (s.hasNextLine()) {
 
-            singeMediaMetaData = s.nextLine().split(";");
+            singeMediaMetaData = s.nextLine().trim().split(";");
+
             String title = singeMediaMetaData[0];
 
             String years = singeMediaMetaData[1];
 
             String genreListe = singeMediaMetaData[2];
+
             String[] genreArray = genreListe.split(",");
+
             List<String> genre = new ArrayList<>(Arrays.asList(genreArray));
 
+
             String rating = singeMediaMetaData[3];
+
 
             if (singeMediaMetaData.length > 4) {
 
@@ -62,6 +67,7 @@ public class ReadData {
     }
 
     public ArrayList<Medier> getSortedMediaObjects() {
+
         return sortedMediaObjects;
     }
 }
