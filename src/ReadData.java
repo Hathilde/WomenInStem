@@ -17,7 +17,7 @@ public class ReadData {
     public void reader() {
 
         File file = new File(filePath);
-        String[] singeMediaMetaData;
+        String[] singleMediaMetaData;
 
         sortedMediaObjects = new ArrayList<>();
 
@@ -31,20 +31,20 @@ public class ReadData {
 
         while (s.hasNextLine()) {
 
-            singeMediaMetaData = s.nextLine().split(";");
-            String title = singeMediaMetaData[0];
+            singleMediaMetaData = s.nextLine().trim().split(";");
+            String title = singleMediaMetaData[0];
 
-            String years = singeMediaMetaData[1];
+            String years = singleMediaMetaData[1];
 
-            String genreListe = singeMediaMetaData[2];
+            String genreListe = singleMediaMetaData[2];
             String[] genreArray = genreListe.split(",");
             List<String> genre = new ArrayList<>(Arrays.asList(genreArray));
 
-            String rating = singeMediaMetaData[3];
+            String rating = singleMediaMetaData[3];
 
-            if (singeMediaMetaData.length > 4) {
+            if (singleMediaMetaData.length > 4) {
 
-                String seasonsAndEpisodes = singeMediaMetaData[4];
+                String seasonsAndEpisodes = singleMediaMetaData[4];
 
                 String imgPath = "serieforsider2/" + title + ".jpg";
 
