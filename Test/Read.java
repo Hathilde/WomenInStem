@@ -9,7 +9,6 @@ public class Read {
     public void testListsOfMedia() {
         ReadData dataReader = new ReadData("hej");
 
-
     }
     @Test
     public void testSpecificDataOfMedia() {
@@ -23,7 +22,6 @@ public class Read {
         System.out.println(dataReaderFilm.getSortedMediaObjects().get(0));
 
         System.out.println(dataReaderSerier.getSortedMediaObjects().get(10));
-
 
     }
 }

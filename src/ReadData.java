@@ -2,6 +2,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLOutput;
 import java.util.*;
 
@@ -24,8 +26,10 @@ public class ReadData {
         Scanner s = null;
 
         try {
-           s = new Scanner(file, "iso-8859-1");
+           s = new Scanner(file, StandardCharsets.ISO_8859_1);
         } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
