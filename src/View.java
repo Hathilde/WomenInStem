@@ -10,7 +10,7 @@ import javax.swing.JList;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-public class View {
+public class View implements ActionListener {
 
     JFrame frame;
     Container container;
@@ -37,57 +37,53 @@ public class View {
         File[] listOfFiles = folder.listFiles();
         DefaultListModel listModel = new DefaultListModel();
 
+        Box box = Box.createVerticalBox();
 
         int count = 0;
         for (int i = 0; i < listOfFiles.length; i++) {
             String name = listOfFiles[i].toString();
             if (name.endsWith("jpg")) {
-                JButton imglabel = new JButton();
                 ImageIcon ii = null;
                 try {
                     ii = new ImageIcon(ImageIO.read(listOfFiles[i]));
 
-
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                imglabel = new JButton(ii);
-
-                ImageIcon finalMediaImage = ii;
-
-                imglabel.addActionListener(event -> actionPerformed());
-                   // JPanel mediaButtonPanel = new JPanel();
-                  //  mediaButtonPanel.setLayout(null);
-                 //mediaButtonPanel.add(imglabel); */
-
-                //frame.add(imglabel);
-                listModel.add(count++,finalMediaImage);
-                //listModel.add(count++,ii);
-
-                //listModel.add(count++,imglabel);
-               // listModel.addElement(imglabel);
-                //listModel.add(count++,ii);
-
+                JButton button = new JButton(ii);
+                box.add(button);
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println(name);
+                    }
+                });
+                frame.add(box);
 
             }
+
         }
 
-        JList lsm = new JList(listModel);
+        frame.setLocationByPlatform(true);
 
-        lsm.setLayoutOrientation(JList.VERTICAL_WRAP);
+        //box.setLayoutOrientation(Box.VERTICAL_WRAP);
 
-        lsm.setVisibleRowCount(4);
+        //box.setVisibleRowCount(4);
 
 
-        frame.add(new JScrollPane(lsm));
+        //frame.add(new JScrollPane(lsm));
 
         frame.setPreferredSize(new Dimension(1000, 800));
 
         frame.pack();
-        fixRowCountForVisibleColumns(lsm);
+        //fixRowCountForVisibleColumns(lsm);
         makeMenuBar(frame);
         frame.pack();
         frame.setVisible(true);
+        frame.setLayout(new BorderLayout());
+        frame.add(output, BorderLayout.NORTH);
+        frame.add(buttonPanel,BorderLayout.CENTER);
+        buttonPanel.setLayout(new GridLayout(4,4));
 
 
        /* ImageIcon icon = new ImageIcon("filmplakater/12 Angry Men.jpg");
@@ -158,4 +154,9 @@ public class View {
         return fileMenu;
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        frame.setBackground(Color.red);
+
+    }
 }
