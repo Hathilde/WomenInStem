@@ -1,23 +1,22 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.JScrollPane;
+import javax.swing.JList;
+
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-public class View {
+public class View implements ActionListener {
 
     JFrame frame;
     Container container;
     Font font;
     JTextField output;
     JPanel buttonPanel;
-    JLabel statusBar;
-
-
 
     public View() {
         frame = new JFrame("PseudoFlix");
@@ -38,11 +37,12 @@ public class View {
         File[] listOfFiles = folder.listFiles();
         DefaultListModel listModel = new DefaultListModel();
 
+        Box box = Box.createVerticalBox();
+
         int count = 0;
         for (int i = 0; i < listOfFiles.length; i++) {
             String name = listOfFiles[i].toString();
             if (name.endsWith("jpg")) {
-                JButton imglabel = new JButton();
                 ImageIcon ii = null;
                 try {
                     ii = new ImageIcon(ImageIO.read(listOfFiles[i]));
@@ -50,31 +50,40 @@ public class View {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                imglabel = new JButton(ii);
+                JButton button = new JButton(ii);
+                box.add(button);
+                button.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println(name);
+                    }
+                });
+                frame.add(box);
 
-                ImageIcon finalMediaImage = ii;
-
-                //imglabel.addActionListener(event -> actionPerformed());
-                listModel.add(count++,finalMediaImage);
             }
+
         }
 
-        JList lsm = new JList(listModel);
+        frame.setLocationByPlatform(true);
 
-        lsm.setLayoutOrientation(JList.VERTICAL_WRAP);
+        //box.setLayoutOrientation(Box.VERTICAL_WRAP);
 
-        lsm.setVisibleRowCount(4);
+        //box.setVisibleRowCount(4);
 
 
-        frame.add(new JScrollPane(lsm));
+        //frame.add(new JScrollPane(lsm));
 
         frame.setPreferredSize(new Dimension(1000, 800));
 
         frame.pack();
-        fixRowCountForVisibleColumns(lsm);
+        //fixRowCountForVisibleColumns(lsm);
         makeMenuBar(frame);
         frame.pack();
         frame.setVisible(true);
+        frame.setLayout(new BorderLayout());
+        frame.add(output, BorderLayout.NORTH);
+        frame.add(buttonPanel,BorderLayout.CENTER);
+        buttonPanel.setLayout(new GridLayout(4,4));
 
 
        /* ImageIcon icon = new ImageIcon("filmplakater/12 Angry Men.jpg");
@@ -104,56 +113,24 @@ public class View {
         return width / cellWidth;
     }
 
-    /* public void actionPerformed() {
+    public void actionPerformed() {
         //  System.out.println("You clicked the image" + event.getActionCommand());
         System.out.println("hej");
         JFrame jf = new JFrame("New Frame");
         jf.setSize(new Dimension(200,70));
         jf.setVisible(true);
         jf.setDefaultCloseOperation(EXIT_ON_CLOSE);
-    } */
+    }
 
 
     // MENU-BAR //
     private void makeMenuBar (JFrame frame) {
         frame.setJMenuBar(createMenuBar());
-
-        statusBar = new JLabel("Easy");
-        statusBar.setBorder(BorderFactory.createEtchedBorder());
-        //add(statusBar, BorderLayout.SOUTH);
-
-       // setTitle("JRadioButtonMenuItem");
-        //setSize(360, 250);
-       // setLocationRelativeTo(null);
-
-        }
-
-
+    }
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(createFileMenu());
         menuBar.add(createEditMenu());
-
-
-        creatGenreMenu().setMnemonic(KeyEvent.VK_F);
-
-       ButtonGroup difGroup = new ButtonGroup();
-
-       JRadioButtonMenuItem easyRMenuItem = new JRadioButtonMenuItem("hejMedDig");
-       easyRMenuItem.setSelected(true);
-       creatGenreMenu().add(easyRMenuItem);
-
-        easyRMenuItem.addItemListener((e) -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                statusBar.setText("Easy");
-            }
-        });
-
-        difGroup.add(easyRMenuItem);
-
-        menuBar.add(creatGenreMenu());
-
-
         return menuBar;
     }
     private JMenu createEditMenu() {
@@ -177,15 +154,9 @@ public class View {
         return fileMenu;
     }
 
-    private JMenu creatGenreMenu() {
-        JMenu genreMenu = new JMenu("hi");
-        JMenuItem alle = new JMenuItem("alle");
-        genreMenu.add(alle);
-        JMenuItem også = new JMenuItem("også");
-        genreMenu.add(også);
-        JMenuItem etKaldtilGenreArray = new JMenuItem("etKaldtilGenreArray");
-        genreMenu.add(etKaldtilGenreArray);
-        return genreMenu;
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        frame.setBackground(Color.red);
 
     }
 }
