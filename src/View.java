@@ -85,6 +85,8 @@ public class View {
 
         frame.pack();
         fixRowCountForVisibleColumns(lsm);
+        makeMenuBar(frame);
+        frame.pack();
         frame.setVisible(true);
 
 
@@ -124,5 +126,36 @@ public class View {
         jf.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
+
+    // MENU-BAR //
+    private void makeMenuBar (JFrame frame) {
+        frame.setJMenuBar(createMenuBar());
+    }
+    private JMenuBar createMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(createFileMenu());
+        menuBar.add(createEditMenu());
+        return menuBar;
+    }
+    private JMenu createEditMenu() {
+        JMenu editMenu = new JMenu("Edit");
+        JMenuItem cutItem = new JMenuItem("Cut");
+        editMenu.add(cutItem);
+        JMenuItem copyItem = new JMenuItem("Copy");
+        editMenu.add(copyItem);
+        JMenuItem pasteItem = new JMenuItem("Paste");
+        editMenu.add(pasteItem);
+        return editMenu;
+    }
+    private JMenu createFileMenu() {
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem newItem = new JMenuItem("New");
+        fileMenu.add(newItem);
+        JMenuItem openItem = new JMenuItem("Open");
+        fileMenu.add(openItem);
+        JMenuItem saveItem = new JMenuItem("Save");
+        fileMenu.add(saveItem);
+        return fileMenu;
+    }
 
 }

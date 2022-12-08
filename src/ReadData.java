@@ -8,6 +8,8 @@ import java.util.*;
 public class ReadData {
     String filePath;
     private ArrayList<Medier> sortedMediaObjects;
+    private ArrayList<Film> allFilmObjects;
+    private ArrayList <Serier> allSerierObjects;
 
     public ReadData(String filePath) {
         this.filePath = filePath;
@@ -63,6 +65,12 @@ public class ReadData {
 
     public ArrayList<Medier> getSortedMediaObjects() {
         return sortedMediaObjects;
+    }
+    public ArrayList<Film> getSortedFilmObjects() {
+        return allFilmObjects;
+    }
+    public ArrayList<Serier> getSortedSerierObjects() {
+        return allSerierObjects;
     }
 }
 
