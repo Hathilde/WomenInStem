@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
     public abstract class Medier {
@@ -9,12 +10,15 @@ import java.util.List;
 
         private String imgPath;
 
+        private HashSet<String> allGenres;
+
         Medier (String title, String year, List <String> genre, String rating, String imgPath ){
             this.title = title;
             this.year = year;
             this.genre = genre; //new ArrayList<>();
             this.rating = rating;
             this.imgPath = imgPath;
+            this.allGenres = allGenres;
 
 
         }
@@ -39,6 +43,17 @@ import java.util.List;
 
         public String getImgPath() {
             return imgPath;
+        }
+
+        public HashSet<String> returnListOfGenres() {
+            allGenres = new HashSet<>();
+            return returnListOfGenres();
+
+
+
+
+
+
         }
     }
 

@@ -11,6 +11,8 @@ public class ReadData {
     private ArrayList<Film> allFilmObjects;
     private ArrayList <Serier> allSerierObjects;
 
+    private String[] arrayGenreMenu;
+
     public ReadData(String filePath) {
         this.filePath = filePath;
 
@@ -72,5 +74,36 @@ public class ReadData {
     public ArrayList<Serier> getSortedSerierObjects() {
         return allSerierObjects;
     }
+
+    public String[] getGenreArray() {
+
+        HashSet<String> hashSetGenre = new HashSet<>();
+
+        for (Medier current : getSortedMediaObjects()) {
+            for(String genre : current.getGenre()) {
+                hashSetGenre.add(genre);
+            }
+        }
+
+        String[] arrayGenreMenu = new String[hashSetGenre.size()];
+             int i = 0;
+
+            for (String current : hashSetGenre) {
+            arrayGenreMenu[i++] = current;
+            }
+
+        return arrayGenreMenu;
+
+       /* opret string array med str. på hashset. (.size) + 1 længere til all genres
+                - set all genres til 0 i string array
+
+                for loop, som tilføjer hashset værdierne, og den starter fra int i 1.
+                i++
+                        return array */
+
+    }
+
+
+
 }
 

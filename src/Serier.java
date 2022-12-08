@@ -16,6 +16,8 @@ public class Serier extends Medier {
 
 
     }
+
+
     @Override
     public String toString(){
         return "Titlen er " + getTitle() + ". Årene den er lavet er"
