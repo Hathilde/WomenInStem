@@ -38,6 +38,7 @@ public class View implements ActionListener {
         DefaultListModel listModel = new DefaultListModel();
 
         Box box = Box.createVerticalBox();
+        Box box1 = Box.createHorizontalBox();
 
         int count = 0;
         for (int i = 0; i < listOfFiles.length; i++) {
@@ -64,26 +65,26 @@ public class View implements ActionListener {
 
         }
 
-        frame.setLocationByPlatform(true);
 
-        //box.setLayoutOrientation(Box.VERTICAL_WRAP);
-
-        //box.setVisibleRowCount(4);
-
-
-        //frame.add(new JScrollPane(lsm));
-
-        frame.setPreferredSize(new Dimension(1000, 800));
-
-        frame.pack();
-        //fixRowCountForVisibleColumns(lsm);
         makeMenuBar(frame);
-        frame.pack();
+        frame.setLocationByPlatform(true);
+        frame.setPreferredSize(new Dimension(1000, 800));
         frame.setVisible(true);
-        frame.setLayout(new BorderLayout());
-        frame.add(output, BorderLayout.NORTH);
-        frame.add(buttonPanel,BorderLayout.CENTER);
-        buttonPanel.setLayout(new GridLayout(4,4));
+        frame.setLayout(new FlowLayout());
+
+
+        //frame.add(output, BorderLayout.NORTH);
+        //frame.add(buttonPanel,BorderLayout.CENTER);
+        // frame.pack();
+        // frame.setLayout(new GridLayout());
+
+
+        // Gammelt layout
+        //box.setLayoutOrientation(Box.VERTICAL_WRAP);
+        //box.setVisibleRowCount(4);
+        //frame.add(new JScrollPane(box));
+        //fixRowCountForVisibleColumns(lsm);
+
 
 
        /* ImageIcon icon = new ImageIcon("filmplakater/12 Angry Men.jpg");
@@ -92,10 +93,10 @@ public class View implements ActionListener {
         frame.setVisible(true);
         */
     }
-
-    private static void fixRowCountForVisibleColumns(JList lsm) {
-        int nCols = computeVisibleColumnCount(lsm);
-        int nItems = lsm.getModel().getSize();
+        /*
+    private static void fixRowCountForVisibleColumns(Box box) {
+        int nCols = computeVisibleColumnCount(box);
+        int nItems = box.getModel().getSize();
 
         // Compute the number of rows that will result in the desired number of
         // columns
@@ -113,15 +114,7 @@ public class View implements ActionListener {
         return width / cellWidth;
     }
 
-    public void actionPerformed() {
-        //  System.out.println("You clicked the image" + event.getActionCommand());
-        System.out.println("hej");
-        JFrame jf = new JFrame("New Frame");
-        jf.setSize(new Dimension(200,70));
-        jf.setVisible(true);
-        jf.setDefaultCloseOperation(EXIT_ON_CLOSE);
-    }
-
+    */
 
     // MENU-BAR //
     private void makeMenuBar (JFrame frame) {
