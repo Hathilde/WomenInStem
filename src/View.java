@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
@@ -167,18 +168,33 @@ public class View implements ActionListener {
     private JMenu createGenreMenu() {
         JMenu genreMenu = new JMenu("Genre");
 
+        ReadData genreHalløj = new ReadData();
+        genreHalløj.reader("./film.txt");
+        genreHalløj.reader("./serier.txt");
+
+        Arrays.toString(genreHalløj.getGenreArray());
 
 
-        getGenreArray();
+
+        JMenuItem nyGenreItem;
+        JMenuItem alleGenreItm = new JMenuItem("Alle");
+        genreMenu.add(alleGenreItm);
+
+        for (String currentGenre : genreHalløj.getGenreArray()) {
+            nyGenreItem = new JMenuItem(currentGenre);
+            genreMenu.add(currentGenre);
+        }
 
 
 
-        JMenuItem cutItem = new JMenuItem("Cut");
+        /*JMenuItem cutItem = new JMenuItem("Cut");
         genreMenu.add(cutItem);
+
+
         JMenuItem copyItem = new JMenuItem("Copy");
         genreMenu.add(copyItem);
         JMenuItem pasteItem = new JMenuItem("Paste");
-        genreMenu.add(pasteItem);
+        genreMenu.add(pasteItem); */
 
         return genreMenu;
     }

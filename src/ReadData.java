@@ -99,8 +99,9 @@ public class ReadData {
             }
         }
 
-        arrayGenreMenu = new String[hashSetGenre.size() + 1];
-             int i = 1;
+        arrayGenreMenu = new String[hashSetGenre.size()];
+
+            int i = 0;
 
             for (String current : hashSetGenre) {
             arrayGenreMenu[i++] = current;
