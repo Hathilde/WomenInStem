@@ -33,8 +33,6 @@ public class ReadData {
         File file = new File(filePath);
         String[] singleMediaMetaData;
 
-
-
         Scanner s = null;
 
         try {
