@@ -206,7 +206,8 @@ public class View implements ActionListener {
         medieMenu.add(openItem);
         JMenuItem saveItem = new JMenuItem("Serier");
         medieMenu.add(saveItem);
-
+        System.out.println("TEST");
+        System.out.println("TEST");
         return medieMenu;
     }
 
@@ -216,6 +217,7 @@ public class View implements ActionListener {
 
 
     }
+
 
 
 }
