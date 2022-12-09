@@ -82,6 +82,8 @@ public class ReadData {
         return allSerierObjects;
     }
 
+
+
     public String[] getGenreArray() {
 
         HashSet<String> hashSetGenre = new HashSet<>();
