@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 
@@ -18,6 +20,23 @@ public class View implements ActionListener {
     JTextField output;
     JPanel buttonPanel;
 
+
+    public List<Medier> getListOfAllMedia() {
+        ReadData dataReader = new ReadData();
+        dataReader.createSortedMediaObjectList();
+        return dataReader.getSortedMediaObjects();
+
+    }
+
+    public List<String> returnListOfImages() {
+        List<String> imgPathList = new ArrayList<>();
+
+        for (Medier mediaObject : getListOfAllMedia()) {
+                imgPathList.add(mediaObject.getImgPath());
+            }
+
+        return imgPathList;
+    }
     public View() {
         frame = new JFrame("PseudoFlix");
         container = frame.getContentPane();
@@ -33,7 +52,10 @@ public class View implements ActionListener {
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setSize(1650,1080);
 
+
+
         File folder = new File("filmplakater");
+
         File[] listOfFiles = folder.listFiles();
         DefaultListModel listModel = new DefaultListModel();
 
