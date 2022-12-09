@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
@@ -117,34 +118,80 @@ public class View implements ActionListener {
     }
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
-        menuBar.add(createFileMenu());
-        menuBar.add(createEditMenu());
+        JButton favoritButton = new JButton("Mine Favoritter!!");
+        menuBar.add(favoritButton);
+        menuBar.add(createMedierMenu());
+        menuBar.add(createGenreMenu());
+
+        // TEST:
+        menuBar.add(new JSeparator());
+        menuBar.add(Box.createHorizontalGlue());
+        JTextField txt;
+        txt = new JTextField("   Søg her...  ",25);
+        txt.setMaximumSize(txt.getPreferredSize());
+        menuBar.add(txt);
+
+        txt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("TEKST : " + txt.getText());
+            }
+        });
+
+        txt.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //super.mouseClicked(e);
+                txt.setText("");
+            }
+        });
         return menuBar;
+
     }
-    private JMenu createEditMenu() {
-        JMenu editMenu = new JMenu("Edit");
-        JMenuItem cutItem = new JMenuItem("Cut");
-        editMenu.add(cutItem);
+    private JMenu createGenreMenu() {
+        JMenu genreMenu = new JMenu("Genre");
+
+        ReadData genreHalløj = new ReadData();
+        genreHalløj.reader("./film.txt");
+        genreHalløj.reader("./serier.txt");
+
+        Arrays.toString(genreHalløj.getGenreArray());
+
+        JMenuItem nyGenreItem;
+        JMenuItem alleGenreItm = new JMenuItem("Alle");
+        genreMenu.add(alleGenreItm);
+
+        for (String currentGenre : genreHalløj.getGenreArray()) {
+            nyGenreItem = new JMenuItem(currentGenre);
+            genreMenu.add(currentGenre);
+        }
+
+        /*JMenuItem cutItem = new JMenuItem("Cut");
+        genreMenu.add(cutItem);
+
         JMenuItem copyItem = new JMenuItem("Copy");
-        editMenu.add(copyItem);
+        genreMenu.add(copyItem);
         JMenuItem pasteItem = new JMenuItem("Paste");
-        editMenu.add(pasteItem);
-        return editMenu;
+        genreMenu.add(pasteItem); */
+
+        return genreMenu;
     }
-    private JMenu createFileMenu() {
-        JMenu fileMenu = new JMenu("File");
-        JMenuItem newItem = new JMenuItem("New");
-        fileMenu.add(newItem);
-        JMenuItem openItem = new JMenuItem("Open");
-        fileMenu.add(openItem);
-        JMenuItem saveItem = new JMenuItem("Save");
-        fileMenu.add(saveItem);
-        return fileMenu;
+    private JMenu createMedierMenu() {
+        JMenu medieMenu = new JMenu("Medier");
+        JMenuItem newItem = new JMenuItem("Alle");
+        medieMenu.add(newItem);
+        JMenuItem openItem = new JMenuItem("Film");
+        medieMenu.add(openItem);
+        JMenuItem saveItem = new JMenuItem("Serier");
+        medieMenu.add(saveItem);
+
+        return medieMenu;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.setBackground(Color.red);
+        //frame.setBackground(Color.red);
 
     }
+
 }
