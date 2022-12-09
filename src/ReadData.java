@@ -23,6 +23,11 @@ public class ReadData {
         sortedMediaObjects = new ArrayList<>();
     }
 
+    public void createSortedMediaObjectList() {
+        reader("./film.txt");
+        reader("./serier.txt");
+    }
+
     public void reader(String filePath) {
         //this.filePath = filePath;
         File file = new File(filePath);
@@ -109,39 +114,11 @@ public class ReadData {
                 i++
                         return array */
     }
-/*
-public String[] hejsameddigsa() {
-    ReadData dataReaderFilm = new ReadData("./film.txt");
-    dataReaderFilm.reader();
-    dataReaderFilm.getGenreArray();
 
-    ReadData dataReaderSerier = new ReadData("./serier.txt");
-    dataReaderSerier.reader();
-    dataReaderSerier.getGenreArray();
-
-    List<String> filmArray = Arrays.asList(dataReaderFilm.getGenreArray());
-    List<String> serieArray = Arrays.asList(dataReaderSerier.getGenreArray());
-
-    Set<String> hashButReturnAsArray = new HashSet<>();
-    hashButReturnAsArray.addAll(filmArray);
-    hashButReturnAsArray.addAll(serieArray);
-
-    System.out.println(hashButReturnAsArray); //1 2 3 4 5 6 7 8
-
-
-    String[] arrayGenreMenu2 = new String[hashButReturnAsArray.size() + 1];
-    int i = 1;
-
-    for (String current : hashButReturnAsArray) {
-        arrayGenreMenu2[i++] = current;
-    }
-
-    return arrayGenreMenu2;
 
 
 }
-*/
 
 
-}
+
 
