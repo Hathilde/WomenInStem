@@ -52,64 +52,48 @@ public class View implements ActionListener {
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setSize(1650,1080);
 
-
-
-        File folder = new File("filmplakater");
-
-        File[] listOfFiles = folder.listFiles();
-        DefaultListModel listModel = new DefaultListModel();
-
-        // TEST :
-        //JFrame frame = new JFrame();
-        //JPanel buttonPanel = new JPanel();
-        //JPanel containerPanel = new JPanel();
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // TEST:
         buttonPanel.setPreferredSize(new Dimension(1000, 1080));
-        //buttonPanel.setLayout(new GridLayout(20,5));
         buttonPanel.setLayout(new FlowLayout());
         makeMenuBar(frame);
 
+        List<Medier> medier = getListOfAllMedia();
         int count = 0;
-        for (int i = 0; i < listOfFiles.length; i++) {
-            String name = listOfFiles[i].toString();
-            if (name.endsWith("jpg")) {
+
+        for (int i = 0; i < medier.size(); i++) {
+            String path = medier.get(i).getImgPath();
+            if (path.endsWith("jpg")) {
                 ImageIcon ii = null;
                 try {
-                    ii = new ImageIcon(ImageIO.read(listOfFiles[i]));
+                    ii = new ImageIcon(ImageIO.read(new File(path)));
 
                 } catch (IOException e) {
+                    System.out.println(path);
                     throw new RuntimeException(e);
                 }
                 JButton button = new JButton();
                 button.setIcon(ii);
 
-                //button.setBounds(0,0,100,209);
-                //button.setMaximumSize(new Dimension(1000,800));
-                //button.setPreferredSize(new Dimension(1000, 800));
-
-                // TEST:
                 buttonPanel.add(button);
-
-                //container.add(buttonPanel);
-
-
 
                 // Gør knappen usynlig.
                 button.setOpaque(false);
                 button.setContentAreaFilled(false);
                 button.setBorderPainted(false);
-
+                String title = medier.get(i).getTitle();
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        JDialog dialog = new JDialog(frame, name);
+                        JDialog dialog = new JDialog(frame, title);
 
                         // create a label
-                        JLabel label = new JLabel(name);
+                        JLabel label = new JLabel(title);
 
                         dialog.add(label);
-
+                        try {
+                            dialog.add(new JLabel(new ImageIcon(ImageIO.read(new File(path)))));
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                         // setsize of dialog
                         dialog.setSize(500, 500);
 
