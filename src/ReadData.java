@@ -30,6 +30,7 @@ public class ReadData {
 
     public void reader(String filePath) {
         //this.filePath = filePath;
+
         File file = new File(filePath);
         String[] singleMediaMetaData;
 
@@ -40,7 +41,8 @@ public class ReadData {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-
+        String baseFilmPath = (new File("filmplakater")).getAbsolutePath();
+        String baseSeriePath = (new File("serieforsider2")).getAbsolutePath();
         while (s.hasNextLine()) {
 
             singleMediaMetaData = s.nextLine().trim().split(";");
@@ -58,14 +60,14 @@ public class ReadData {
 
                 String seasonsAndEpisodes = singleMediaMetaData[4];
 
-                String imgPath = "serieforsider2/" + title + ".jpg";
+                String imgPath = baseSeriePath+ "\\" + title + ".jpg";
 
                 Serier serie = new Serier(title, years, genre, rating, imgPath, seasonsAndEpisodes);
                 sortedMediaObjects.add(serie);
                 allSerierObjects.add(serie);
 
             } else {
-                String imgPath = "filmplakater/" + title + ".jpg";
+                String imgPath = baseFilmPath + "\\" + title + ".jpg";
 
                 Film film = new Film(title, years, genre, rating, imgPath);
                 sortedMediaObjects.add(film);
