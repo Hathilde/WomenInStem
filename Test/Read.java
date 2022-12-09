@@ -51,4 +51,10 @@ public class Read {
         System.out.println(newView.returnListOfImages());
     }
 
+    @Test
+    public void testGetListOfAllMedia() {
+        View newView = new View();
+
+        System.out.println(newView.getListOfAllMedia());
+    }
 }
