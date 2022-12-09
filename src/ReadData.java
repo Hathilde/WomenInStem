@@ -9,21 +9,26 @@ public class ReadData {
     String filePath;
     private ArrayList<Medier> sortedMediaObjects;
     private ArrayList<Film> allFilmObjects;
-    private ArrayList <Serier> allSerierObjects;
+    private ArrayList<Serier> allSerierObjects;
 
     private String[] arrayGenreMenu;
 
-    public ReadData(String filePath) {
-        this.filePath = filePath;
+    private ReadData dataReaderFilm;
 
+    private ReadData dataReaderSerier;
+
+    public ReadData() {
+        allFilmObjects = new ArrayList<>();
+        allSerierObjects = new ArrayList<>();
+        sortedMediaObjects = new ArrayList<>();
     }
 
-    public void reader() {
-
+    public void reader(String filePath) {
+        //this.filePath = filePath;
         File file = new File(filePath);
         String[] singleMediaMetaData;
 
-        sortedMediaObjects = new ArrayList<>();
+
 
         Scanner s = null;
 
@@ -54,12 +59,14 @@ public class ReadData {
 
                 Serier serie = new Serier(title, years, genre, rating, imgPath, seasonsAndEpisodes);
                 sortedMediaObjects.add(serie);
+                allSerierObjects.add(serie);
 
             } else {
                 String imgPath = "filmplakater/" + title + ".jpg";
 
                 Film film = new Film(title, years, genre, rating, imgPath);
                 sortedMediaObjects.add(film);
+                allFilmObjects.add(film);
 
             }
         }
@@ -85,24 +92,53 @@ public class ReadData {
             }
         }
 
-        String[] arrayGenreMenu = new String[hashSetGenre.size()];
-             int i = 0;
+        arrayGenreMenu = new String[hashSetGenre.size() + 1];
+             int i = 1;
 
             for (String current : hashSetGenre) {
             arrayGenreMenu[i++] = current;
             }
 
         return arrayGenreMenu;
-
        /* opret string array med str. på hashset. (.size) + 1 længere til all genres
                 - set all genres til 0 i string array
 
                 for loop, som tilføjer hashset værdierne, og den starter fra int i 1.
                 i++
                         return array */
+    }
+/*
+public String[] hejsameddigsa() {
+    ReadData dataReaderFilm = new ReadData("./film.txt");
+    dataReaderFilm.reader();
+    dataReaderFilm.getGenreArray();
 
+    ReadData dataReaderSerier = new ReadData("./serier.txt");
+    dataReaderSerier.reader();
+    dataReaderSerier.getGenreArray();
+
+    List<String> filmArray = Arrays.asList(dataReaderFilm.getGenreArray());
+    List<String> serieArray = Arrays.asList(dataReaderSerier.getGenreArray());
+
+    Set<String> hashButReturnAsArray = new HashSet<>();
+    hashButReturnAsArray.addAll(filmArray);
+    hashButReturnAsArray.addAll(serieArray);
+
+    System.out.println(hashButReturnAsArray); //1 2 3 4 5 6 7 8
+
+
+    String[] arrayGenreMenu2 = new String[hashButReturnAsArray.size() + 1];
+    int i = 1;
+
+    for (String current : hashButReturnAsArray) {
+        arrayGenreMenu2[i++] = current;
     }
 
+    return arrayGenreMenu2;
+
+
+}
+*/
 
 
 }

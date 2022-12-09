@@ -10,7 +10,7 @@ public class Film extends Medier {
     public String toString(){
         return "Titlen er " + getTitle() + ". Året den er lavet er"
                 + getYear() + ". Genren er " + getGenre() + ". IMDB-ratingen er"
-                + getRating() + ".";
+                + getRating() + ". Og imgPath er: " + getImgPath();
 
     }
 

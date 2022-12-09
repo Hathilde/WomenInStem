@@ -7,37 +7,33 @@ import java.util.Arrays;
 public class Read {
  
 
-
     @Test
-    public void createReadDataClass() {
-        ReadData dataReaderFilm = new ReadData("./film.txt");
-        ReadData dataReaderSerier = new ReadData("./serier.txt");
-        dataReaderFilm.reader();
-        dataReaderSerier.reader();
-    }
+    public void testListOfMedia() {
+        ReadData dataReader = new ReadData();
+        dataReader.reader("./film.txt");
+        dataReader.reader("./serier.txt");
+      // assert(dataReader.getSortedMediaObjects().get(99), "Titlen er Yankee Doodle Dandy. Året den er lavet er 1942. Genren er [ Biography,  Drama,  Musical]. IMDB-ratingen er 7,7."");
 
-    @Test
-    public void testListsOfMedia() {
-        ReadData dataReader = new ReadData("hej");
 
+        System.out.println(dataReader.getSortedMediaObjects().get(99));
+        //System.out.println(dataReader.getSortedMediaObjects());
 
     }
     @Test
     public void testSpecificDataOfMedia() {
-        ReadData dataReaderFilm = new ReadData("./film.txt");
-        ReadData dataReaderSerier = new ReadData("./serier.txt");
-        dataReaderFilm.reader();
-        dataReaderSerier.reader();
+        ReadData dataReader = new ReadData();
+        dataReader.reader("./film.txt");
+        dataReader.reader("./serier.txt");
         // assert(dataReaderFilm.getSortedMediaObjects().get(99), "test");
 
         System.out.println();
-        System.out.println(dataReaderFilm.getSortedMediaObjects());
-        System.out.println(dataReaderFilm.getSortedMediaObjects());
+        System.out.println(dataReader.getSortedMediaObjects().get(99));
+        //System.out.println(dataReader.getSortedMediaObjects());
      
 
     }
 
-   @Test
+  /* @Test
     public void testArrayOfGenre() {
 
         ReadData dataReaderFilm = new ReadData("./film.txt");
@@ -48,9 +44,13 @@ public class Read {
             dataReaderSerier.reader();
             dataReaderSerier.getGenreArray();
 
-       System.out.println(Arrays.toString(dataReaderFilm.getGenreArray()));
-       System.out.println(Arrays.toString(dataReaderSerier.getGenreArray()));
+       //System.out.println(Arrays.toString(dataReaderFilm.getGenreArray()));
+       //System.out.println(Arrays.toString(dataReaderSerier.getGenreArray()));
+       System.out.println(Arrays.toString(dataReaderSerier.hejsameddigsa()));
+
+*/
 
 
-    }
+
+
 }
