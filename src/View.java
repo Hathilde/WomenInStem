@@ -37,8 +37,16 @@ public class View implements ActionListener {
         File[] listOfFiles = folder.listFiles();
         DefaultListModel listModel = new DefaultListModel();
 
-        Box box = Box.createVerticalBox();
-        Box box1 = Box.createHorizontalBox();
+        // TEST :
+        //JFrame frame = new JFrame();
+        //JPanel buttonPanel = new JPanel();
+        //JPanel containerPanel = new JPanel();
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // TEST:
+        buttonPanel.setPreferredSize(new Dimension(1000, 1080));
+        //buttonPanel.setLayout(new GridLayout(20,5));
+        buttonPanel.setLayout(new FlowLayout());
+        makeMenuBar(frame);
 
         int count = 0;
         for (int i = 0; i < listOfFiles.length; i++) {
@@ -51,70 +59,51 @@ public class View implements ActionListener {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                JButton button = new JButton(ii);
-                box.add(button);
+                JButton button = new JButton();
+                button.setIcon(ii);
+
+                //button.setBounds(0,0,100,209);
+                //button.setMaximumSize(new Dimension(1000,800));
+                //button.setPreferredSize(new Dimension(1000, 800));
+
+                // TEST:
+                buttonPanel.add(button);
+
+                //container.add(buttonPanel);
+
+
+
+                // Gør knappen usynlig.
+                button.setOpaque(false);
+                button.setContentAreaFilled(false);
+                button.setBorderPainted(false);
+
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        System.out.println(name);
+                        JDialog dialog = new JDialog(frame, name);
+
+                        // create a label
+                        JLabel label = new JLabel(name);
+
+                        dialog.add(label);
+
+                        // setsize of dialog
+                        dialog.setSize(500, 500);
+
+                        // set visibility of dialog
+                        dialog.setVisible(true);
                     }
                 });
-                frame.add(box);
 
             }
 
         }
-
-
-        makeMenuBar(frame);
-        frame.setLocationByPlatform(true);
-        frame.setPreferredSize(new Dimension(1000, 800));
-        frame.setVisible(true);
-        frame.setLayout(new FlowLayout());
-
-
-        //frame.add(output, BorderLayout.NORTH);
-        //frame.add(buttonPanel,BorderLayout.CENTER);
-        // frame.pack();
-        // frame.setLayout(new GridLayout());
-
-
-        // Gammelt layout
-        //box.setLayoutOrientation(Box.VERTICAL_WRAP);
-        //box.setVisibleRowCount(4);
-        //frame.add(new JScrollPane(box));
-        //fixRowCountForVisibleColumns(lsm);
-
-
-
-       /* ImageIcon icon = new ImageIcon("filmplakater/12 Angry Men.jpg");
-        frame.add(new JLabel(icon));
+        frame.getContentPane().add(new JScrollPane(buttonPanel));
         frame.pack();
         frame.setVisible(true);
-        */
-    }
-        /*
-    private static void fixRowCountForVisibleColumns(Box box) {
-        int nCols = computeVisibleColumnCount(box);
-        int nItems = box.getModel().getSize();
-
-        // Compute the number of rows that will result in the desired number of
-        // columns
-        int nRows = nItems / nCols;
-        if (nItems % nCols > 0) nRows++;
-        lsm.setVisibleRowCount(nRows);
     }
 
-    private static int computeVisibleColumnCount(JList lsm) {
-        // It's assumed here that all cells have the same width. This method
-        // could be modified if this assumption is false. If there was cell
-        // padding, it would have to be accounted for here as well.
-        int cellWidth = lsm.getCellBounds(0, 0).width;
-        int width = lsm.getVisibleRect().width;
-        return width / cellWidth;
-    }
-
-    */
 
     // MENU-BAR //
     private void makeMenuBar (JFrame frame) {
