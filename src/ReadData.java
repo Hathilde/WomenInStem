@@ -8,8 +8,8 @@ import java.util.*;
 public class ReadData {
     String filePath;
     private ArrayList<Medier> sortedMediaObjects;
-    private ArrayList<Film> allFilmObjects;
-    private ArrayList<Serier> allSerierObjects;
+    private ArrayList<Medier> allFilmObjects;
+    private ArrayList<Medier> allSerierObjects;
 
     private String[] arrayGenreMenu;
 
@@ -78,12 +78,13 @@ public class ReadData {
     }
 
     public ArrayList<Medier> getSortedMediaObjects() {
+
         return sortedMediaObjects;
     }
-    public ArrayList<Film> getSortedFilmObjects() {
+    public ArrayList<Medier> getSortedFilmObjects() {
         return allFilmObjects;
     }
-    public ArrayList<Serier> getSortedSerierObjects() {
+    public ArrayList<Medier> getSortedSerierObjects() {
         return allSerierObjects;
     }
 
