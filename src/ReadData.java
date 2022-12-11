@@ -60,14 +60,14 @@ public class ReadData {
 
                 String seasonsAndEpisodes = singleMediaMetaData[4];
 
-                String imgPath = baseSeriePath+ "\\" + title + ".jpg";
+                String imgPath = baseSeriePath+ "/" + title + ".jpg";
 
                 Serier serie = new Serier(title, years, genre, rating, imgPath, seasonsAndEpisodes);
                 sortedMediaObjects.add(serie);
                 allSerierObjects.add(serie);
 
             } else {
-                String imgPath = baseFilmPath + "\\" + title + ".jpg";
+                String imgPath = baseFilmPath + "/" + title + ".jpg";
 
                 Film film = new Film(title, years, genre, rating, imgPath);
                 sortedMediaObjects.add(film);

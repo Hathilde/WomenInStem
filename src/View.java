@@ -53,7 +53,7 @@ public class View implements ActionListener {
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setSize(1650,1080);
 
-        buttonPanel.setPreferredSize(new Dimension(1000, 1080));
+        buttonPanel.setPreferredSize(new Dimension(1000, 5000));
         buttonPanel.setLayout(new FlowLayout());
         makeMenuBar(frame);
 
