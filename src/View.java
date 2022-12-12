@@ -116,31 +116,48 @@ public class View implements ActionListener {
                 button.setBorderPainted(false);
 
                 String title = medier.get(i).getTitle();
-
+                int finalI = i;
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        JDialog dialog = new JDialog(frame, title);
 
-                        // create a label
-                        JLabel label = new JLabel(title);
+                        JFrame frameSpecifikMedia = new JFrame(title);
+                        container = frame.getContentPane();
+                        font = new Font("Sans-Serif", Font.PLAIN, 60);
+                        output = new JTextField("0");
+                        buttonPanel = new JPanel();
+                        frameSpecifikMedia.setSize(750,750);
+                        //buttonPanel.setPreferredSize(new Dimension(100, 100));
+                        buttonPanel.setLayout(new GridLayout(2,2, 2 ,5 ));
+                        String specificMediaInfo = medier.get(finalI).toString();
 
-                        dialog.add(label);
+                        JLabel label1 = new JLabel(("<html>" + specificMediaInfo + "</html>"));
+                        Button addToFavoritesButton = new Button("Add to favorites");
+                        addToFavoritesButton.setSize(5,5);
+                        Button playButton = new Button("Play");
+
+                        playButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                playButton.setBackground(Color.RED);
+                            }
+                        });
+
+                        buttonPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+
+                        JLabel billede = null;
                         try {
-                            dialog.add(new JLabel(new ImageIcon(ImageIO.read(new File(path)))));
-                            JLabel stringLabel = new JLabel("Title");
-                            Dimension size = stringLabel.getPreferredSize();
-                            stringLabel.setBounds(50, 200, size.width, size.height);
-                            dialog.add(stringLabel);
-
+                            billede = new JLabel(new ImageIcon(ImageIO.read(new File(path))));
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
-                        // setsize of dialog
-                        dialog.setSize(500, 500);
+                        buttonPanel.add(billede);
+                        buttonPanel.add(label1);
+                        buttonPanel.add(addToFavoritesButton);
+                        buttonPanel.add(playButton);
 
-                        // set visibility of dialog
-                        dialog.setVisible(true);
+                        frameSpecifikMedia.add(buttonPanel);
+                        frameSpecifikMedia.setVisible(true);
                     }
                 });
 
@@ -159,6 +176,7 @@ public class View implements ActionListener {
 
 
     }
+
 
 
     // MENU-BAR //
