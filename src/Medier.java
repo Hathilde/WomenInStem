@@ -48,13 +48,18 @@ import java.util.List;
         public HashSet<String> returnListOfGenres() {
             allGenres = new HashSet<>();
             return returnListOfGenres();
-
-
-
-
-
-
         }
-    }
+
+            public String toString(){
+                String title =  "Titlen er " + getTitle() + ". ";
+                String year = "Årene den er lavet er" + getYear() + ". ";
+                String genre = "Genren er " + getGenre() + ". ";
+                String IMDBrating = "IMDB-ratingen er " + getRating() + ". ";
+
+                String finalString = title + "<br>" + year + "<br>" + genre + "<br>" + IMDBrating;
+
+                return finalString;
+            }
+        }
 
 

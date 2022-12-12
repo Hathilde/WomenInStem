@@ -8,11 +8,9 @@ public class Film extends Medier {
 
     @Override
     public String toString(){
-        return "Titlen er " + getTitle() + ". Året den er lavet er"
-                + getYear() + ". Genren er " + getGenre() + ". IMDB-ratingen er"
-                + getRating() + ". Og imgPath er: " + getImgPath();
-
+        return super.toString();
     }
 
 }
+
 
