@@ -36,13 +36,13 @@ public class View implements ActionListener {
         ReadData dataReader = new ReadData();
         dataReader.createSortedMediaObjectList();
 
-        if (filmBoolean == true) {
+        if (filmBoolean) {
             return dataReader.getSortedFilmObjects();
 
-        } else if (serieBoolean == true) {
+        } else if (serieBoolean) {
             return dataReader.getSortedSerierObjects();
 
-        } else if (singleBoolean == true){
+        } else if (singleBoolean){
             return singleMedie;
 
         } else {
@@ -259,7 +259,6 @@ public class View implements ActionListener {
                 falsetestSerier();
                 falseTestSingle();
                 truealle();
-
 
                 buildView();
 
