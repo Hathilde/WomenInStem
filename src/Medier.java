@@ -19,8 +19,6 @@ import java.util.List;
             this.rating = rating;
             this.imgPath = imgPath;
             this.allGenres = allGenres;
-
-
         }
 
         public String getYear() {
@@ -43,6 +41,17 @@ import java.util.List;
 
         public String getImgPath() {
             return imgPath;
+        }
+
+        public String toString(){
+            String title =  "Titlen er " + getTitle() + ". ";
+            String year = "Årene den er lavet er" + getYear() + ". ";
+            String genre = "Genren er " + getGenre() + ". ";
+            String IMDBrating = "IMDB-ratingen er " + getRating() + ". ";
+
+            String finalString = title + "<br>" + year + "<br>" + genre + "<br>" + IMDBrating;
+
+            return finalString;
         }
 
         public HashSet<String> returnListOfGenres() {

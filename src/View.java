@@ -81,6 +81,7 @@ public class View implements ActionListener {
                 button.setContentAreaFilled(false);
                 button.setBorderPainted(false);
                 String title = medier.get(i).getTitle();
+                int finalI = i;
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -93,11 +94,24 @@ public class View implements ActionListener {
                         output = new JTextField("0");
                         buttonPanel = new JPanel();
                         frameSpecifikMedia.setSize(750,750);
-                        buttonPanel.setPreferredSize(new Dimension(1000, 5000));
-                        buttonPanel.setLayout(new GridLayout(0,2, 5 ,10 ));
-                        JLabel label1 = new JLabel("Hello");
+                        //buttonPanel.setPreferredSize(new Dimension(100, 100));
+                        buttonPanel.setLayout(new GridLayout(2,2, 2 ,5 ));
+                        String specificMediaInfo = medier.get(finalI).toString();
+
+                        JLabel label1 = new JLabel(("<html>" + specificMediaInfo + "</html>"));
+                        //JLabel label1 = new JLabel(specificMediaInfo);
+                        //JLabel label1 = new JLabel(specificMediaInfo);
                         Button addToFavoritesButton = new Button("Add to favorites");
+                        addToFavoritesButton.setSize(5,5);
                         Button playButton = new Button("Play");
+
+                        playButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                playButton.setBackground(Color.RED);
+                            }
+                        });
+
                         buttonPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
                         JLabel billede = null;
