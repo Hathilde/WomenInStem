@@ -21,11 +21,34 @@ public class View implements ActionListener {
     JTextField output;
     JPanel buttonPanel;
 
+    List<Medier> medier;
+
+    List<Medier> singleMedie;
+
+    boolean alleBoolean;
+    boolean filmBoolean;
+    boolean serieBoolean;
+    boolean singleBoolean;
+
+
 
     public List<Medier> getListOfAllMedia() {
         ReadData dataReader = new ReadData();
         dataReader.createSortedMediaObjectList();
-        return dataReader.getSortedMediaObjects();
+
+        if (filmBoolean) {
+            return dataReader.getSortedFilmObjects();
+
+        } else if (serieBoolean) {
+            return dataReader.getSortedSerierObjects();
+
+        } else if (singleBoolean){
+            return singleMedie;
+
+        } else {
+            return dataReader.getSortedMediaObjects();
+
+        }
 
     }
 
@@ -39,17 +62,15 @@ public class View implements ActionListener {
         return imgPathList;
     }
     public View() {
+        alleBoolean = true;
+        filmBoolean = false;
+        serieBoolean = false;
+
         frame = new JFrame("PseudoFlix");
         container = frame.getContentPane();
         font = new Font("Sans-Serif", Font.PLAIN, 60);
         output = new JTextField("0");
         buttonPanel = new JPanel();
-
-        buildView();
-    }
-
-
-    private void buildView() {
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setSize(1650,1080);
 
@@ -57,7 +78,20 @@ public class View implements ActionListener {
         buttonPanel.setLayout(new FlowLayout());
         makeMenuBar(frame);
 
-        List<Medier> medier = getListOfAllMedia();
+        frame.getContentPane().add(new JScrollPane(buttonPanel));
+
+        buildView();
+
+    }
+
+
+    private void buildView() {
+        buttonPanel.removeAll();
+        //JPanel panel = new JPanel();
+        //remove all components in panel.
+        buttonPanel.removeAll();
+
+        medier = getListOfAllMedia();
         int count = 0;
 
         for (int i = 0; i < medier.size(); i++) {
@@ -80,10 +114,10 @@ public class View implements ActionListener {
                 button.setOpaque(false);
                 button.setContentAreaFilled(false);
                 button.setBorderPainted(false);
-                String title = medier.get(i).getTitle();
-                int finalI = i;
 
-                //ActionLinstener ved tryk på specifikt objekt
+                String title = medier.get(i).getTitle();
+
+                int finalI = i;
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -131,9 +165,17 @@ public class View implements ActionListener {
             }
 
         }
-        frame.getContentPane().add(new JScrollPane(buttonPanel));
+
+        buttonPanel.revalidate();
+        buttonPanel.repaint();
+
+        // refresh the panel.
+        buttonPanel.updateUI();
+
         frame.pack();
         frame.setVisible(true);
+
+
     }
 
 
@@ -159,7 +201,35 @@ public class View implements ActionListener {
         txt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("TEKST : " + txt.getText());
+
+                //System.out.println("ActionEvent: " + txt.getText());
+                singleMedie = new ArrayList<>();
+                singleMedie.removeAll(singleMedie);
+
+                falsetestFilm();
+                falsetestSerier();
+                falseTestSingle();
+                truealle();
+
+                getListOfAllMedia();
+
+                buildView();
+
+                for (int i = 0; i < medier.size(); i++) {
+                    String title = medier.get(i).getTitle();
+
+                    if (txt.getText().equals(title)) {
+                        singleMedie.add(medier.get(i));
+                        //System.out.println("IF - TEKST : " + txt.getText() + " + " + title);
+
+                        falsetestSerier();
+                        falsetestAlle();
+                        falsetestFilm();
+                        trueSingle();
+
+                        buildView();
+                    }
+                }
             }
         });
 
@@ -191,27 +261,99 @@ public class View implements ActionListener {
             genreMenu.add(currentGenre);
         }
 
-        /*JMenuItem cutItem = new JMenuItem("Cut");
-        genreMenu.add(cutItem);
-
-        JMenuItem copyItem = new JMenuItem("Copy");
-        genreMenu.add(copyItem);
-        JMenuItem pasteItem = new JMenuItem("Paste");
-        genreMenu.add(pasteItem); */
-
         return genreMenu;
     }
     private JMenu createMedierMenu() {
         JMenu medieMenu = new JMenu("Medier");
-        JMenuItem newItem = new JMenuItem("Alle");
-        medieMenu.add(newItem);
-        JMenuItem openItem = new JMenuItem("Film");
-        medieMenu.add(openItem);
-        JMenuItem saveItem = new JMenuItem("Serier");
-        medieMenu.add(saveItem);
+        JMenuItem alleItem = new JMenuItem("Alle");
+        medieMenu.add(alleItem);
+
+
+        alleItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                falsetestFilm();
+                falsetestSerier();
+                falseTestSingle();
+                truealle();
+
+                buildView();
+
+            }
+        });
+
+        JMenuItem filmItem = new JMenuItem("Film");
+        medieMenu.add(filmItem);
+        filmItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                falsetestSerier();
+                falsetestAlle();
+                falseTestSingle();
+                truefilm();
+
+
+                buildView();
+
+            }
+        });
+
+        JMenuItem serieItem = new JMenuItem("Serier");
+        medieMenu.add(serieItem);
+        serieItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                falsetestAlle();
+                falsetestFilm();
+                falseTestSingle();
+                trueserier();
+
+                buildView();
+
+            }
+        });
 
         return medieMenu;
     }
+
+    public boolean truealle(){
+        return alleBoolean = true;
+    }
+
+    public boolean truefilm(){
+        return filmBoolean = true;
+    }
+
+    public boolean trueserier(){
+        return serieBoolean = true;
+    }
+
+
+    public boolean falsetestAlle(){
+        return alleBoolean = false;
+    }
+
+    public boolean falsetestFilm(){
+        return filmBoolean = false;
+    }
+
+    public boolean falsetestSerier(){
+
+        return serieBoolean = false;
+    }
+
+    public boolean trueSingle() {
+        return singleBoolean = true;
+    }
+
+    public boolean falseTestSingle() {
+        return singleBoolean = false;
+    }
+
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
