@@ -84,22 +84,58 @@ public class View implements ActionListener {
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        JDialog dialog = new JDialog(frame, title);
+                        //JDialog dialog = new JDialog(frame, title);
+                        //JDialog dialog = new JDialog(frame, title);
 
-                        // create a label
-                        JLabel label = new JLabel(title);
+                        JFrame frameSpecifikMedia = new JFrame(title);
+                        container = frame.getContentPane();
+                        font = new Font("Sans-Serif", Font.PLAIN, 60);
+                        output = new JTextField("0");
+                        buttonPanel = new JPanel();
+                        frameSpecifikMedia.setSize(750,750);
+                        buttonPanel.setPreferredSize(new Dimension(1000, 5000));
+                        buttonPanel.setLayout(new GridLayout(0,2, 5 ,10 ));
+                        JLabel label1 = new JLabel("Hello");
+                        Button addToFavoritesButton = new Button("Add to favorites");
+                        Button playButton = new Button("Play");
+                        buttonPanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
-                        dialog.add(label);
+                        JLabel billede = null;
                         try {
-                            dialog.add(new JLabel(new ImageIcon(ImageIO.read(new File(path)))));
+                            billede = new JLabel(new ImageIcon(ImageIO.read(new File(path))));
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        //frameSpecifikMedia.add(billede);
+                        buttonPanel.add(billede);
+                        buttonPanel.add(label1);
+                        buttonPanel.add(addToFavoritesButton);
+                        buttonPanel.add(playButton);
+
+                        /*
+                        // create a label
+                        //JLabel label = new JLabel(title);
+
+                        //dialog.add(label);
+                        try {
+                            JLabel billede = new JLabel(new ImageIcon(ImageIO.read(new File(path))));
+                            dialog.add(billede);
+
+
+                            //dialog.add(new JLabel(new ImageIcon(ImageIO.read(new File(path)))));
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
                         // setsize of dialog
-                        dialog.setSize(500, 500);
+                        dialog.setBounds(500, 100, 500, 600);
+
+                        dialog.setModal(true);
+                        */
 
                         // set visibility of dialog
-                        dialog.setVisible(true);
+                        //dialog.setVisible(true);
+                        frameSpecifikMedia.add(buttonPanel);
+                        frameSpecifikMedia.setVisible(true);
                     }
                 });
 

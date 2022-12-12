@@ -57,4 +57,10 @@ public class Read {
 
         System.out.println(newView.getListOfAllMedia());
     }
+    /*
+    @Test
+    public void testSpecifikMediaPopUp(){
+        SpecifikMediaClass = new SpecifikMediaClass(frame, title);
+
+    }*/
 }
