@@ -82,11 +82,11 @@ public class View implements ActionListener {
                 button.setBorderPainted(false);
                 String title = medier.get(i).getTitle();
                 int finalI = i;
+
+                //ActionLinstener ved tryk på specifikt objekt
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        //JDialog dialog = new JDialog(frame, title);
-                        //JDialog dialog = new JDialog(frame, title);
 
                         JFrame frameSpecifikMedia = new JFrame(title);
                         container = frame.getContentPane();
@@ -99,8 +99,6 @@ public class View implements ActionListener {
                         String specificMediaInfo = medier.get(finalI).toString();
 
                         JLabel label1 = new JLabel(("<html>" + specificMediaInfo + "</html>"));
-                        //JLabel label1 = new JLabel(specificMediaInfo);
-                        //JLabel label1 = new JLabel(specificMediaInfo);
                         Button addToFavoritesButton = new Button("Add to favorites");
                         addToFavoritesButton.setSize(5,5);
                         Button playButton = new Button("Play");
@@ -120,34 +118,11 @@ public class View implements ActionListener {
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
-                        //frameSpecifikMedia.add(billede);
                         buttonPanel.add(billede);
                         buttonPanel.add(label1);
                         buttonPanel.add(addToFavoritesButton);
                         buttonPanel.add(playButton);
 
-                        /*
-                        // create a label
-                        //JLabel label = new JLabel(title);
-
-                        //dialog.add(label);
-                        try {
-                            JLabel billede = new JLabel(new ImageIcon(ImageIO.read(new File(path))));
-                            dialog.add(billede);
-
-
-                            //dialog.add(new JLabel(new ImageIcon(ImageIO.read(new File(path)))));
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        // setsize of dialog
-                        dialog.setBounds(500, 100, 500, 600);
-
-                        dialog.setModal(true);
-                        */
-
-                        // set visibility of dialog
-                        //dialog.setVisible(true);
                         frameSpecifikMedia.add(buttonPanel);
                         frameSpecifikMedia.setVisible(true);
                     }
