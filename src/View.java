@@ -21,22 +21,33 @@ public class View implements ActionListener {
     JTextField output;
     JPanel buttonPanel;
 
+    List<Medier> medier;
+
+    List<Medier> singleMedie;
+
     boolean alleBoolean;
     boolean filmBoolean;
     boolean serieBoolean;
+    boolean singleBoolean;
+
+
 
     public List<Medier> getListOfAllMedia() {
         ReadData dataReader = new ReadData();
         dataReader.createSortedMediaObjectList();
 
         if (filmBoolean == true) {
-        return dataReader.getSortedFilmObjects();
+            return dataReader.getSortedFilmObjects();
 
         } else if (serieBoolean == true) {
-        return dataReader.getSortedSerierObjects();
+            return dataReader.getSortedSerierObjects();
+
+        } else if (singleBoolean == true){
+            return singleMedie;
 
         } else {
             return dataReader.getSortedMediaObjects();
+
         }
 
     }
@@ -71,7 +82,6 @@ public class View implements ActionListener {
 
         buildView();
 
-
     }
 
 
@@ -81,10 +91,8 @@ public class View implements ActionListener {
         //remove all components in panel.
         buttonPanel.removeAll();
 
-
-        List<Medier> medier = getListOfAllMedia();
+        medier = getListOfAllMedia();
         int count = 0;
-
 
         for (int i = 0; i < medier.size(); i++) {
             String path = medier.get(i).getImgPath();
@@ -120,6 +128,11 @@ public class View implements ActionListener {
                         dialog.add(label);
                         try {
                             dialog.add(new JLabel(new ImageIcon(ImageIO.read(new File(path)))));
+                            JLabel stringLabel = new JLabel("Title");
+                            Dimension size = stringLabel.getPreferredSize();
+                            stringLabel.setBounds(50, 200, size.width, size.height);
+                            dialog.add(stringLabel);
+
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
@@ -171,7 +184,34 @@ public class View implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                System.out.println("TEKST : " + txt.getText());
+                //System.out.println("ActionEvent: " + txt.getText());
+                singleMedie = new ArrayList<>();
+                singleMedie.removeAll(singleMedie);
+
+                falsetestFilm();
+                falsetestSerier();
+                falseTestSingle();
+                truealle();
+
+                getListOfAllMedia();
+
+                buildView();
+
+                for (int i = 0; i < medier.size(); i++) {
+                    String title = medier.get(i).getTitle();
+
+                    if (txt.getText().equals(title)) {
+                        singleMedie.add(medier.get(i));
+                        //System.out.println("IF - TEKST : " + txt.getText() + " + " + title);
+
+                        falsetestSerier();
+                        falsetestAlle();
+                        falsetestFilm();
+                        trueSingle();
+
+                        buildView();
+                    }
+                }
             }
         });
 
@@ -217,7 +257,10 @@ public class View implements ActionListener {
 
                 falsetestFilm();
                 falsetestSerier();
+                falseTestSingle();
                 truealle();
+
+
                 buildView();
 
             }
@@ -231,7 +274,10 @@ public class View implements ActionListener {
 
                 falsetestSerier();
                 falsetestAlle();
+                falseTestSingle();
                 truefilm();
+
+
                 buildView();
 
             }
@@ -245,7 +291,9 @@ public class View implements ActionListener {
 
                 falsetestAlle();
                 falsetestFilm();
+                falseTestSingle();
                 trueserier();
+
                 buildView();
 
             }
@@ -278,8 +326,16 @@ public class View implements ActionListener {
     public boolean falsetestSerier(){
 
         return serieBoolean = false;
-
     }
+
+    public boolean trueSingle() {
+        return singleBoolean = true;
+    }
+
+    public boolean falseTestSingle() {
+        return singleBoolean = false;
+    }
+
 
 
     @Override
