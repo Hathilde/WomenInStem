@@ -87,8 +87,7 @@ public class View implements ActionListener {
 
     private void buildView() {
         buttonPanel.removeAll();
-        //JPanel panel = new JPanel();
-        //remove all components in panel.
+
         buttonPanel.removeAll();
 
         medier = getListOfAllMedia();
@@ -117,8 +116,7 @@ public class View implements ActionListener {
 
                 String title = medier.get(i).getTitle();
                 String specificMediaInfo = medier.get(i).toString();
-                //int finalI = i;
-                //int hej = i;
+
 
                 button.addActionListener(new ActionListener() {
                     @Override
@@ -130,9 +128,8 @@ public class View implements ActionListener {
                         output = new JTextField("0");
                         JPanel buttonPanelIndre = new JPanel();
                         frameSpecifikMedia.setSize(750,750);
-                        //buttonPanelIndre.setPreferredSize(new Dimension(100, 100));
+
                         buttonPanelIndre.setLayout(new GridLayout(2,2, 2 ,5 ));
-                        //String specificMediaInfo = medier.get(i).toString();
 
                         JLabel label1 = new JLabel(("<html>" + specificMediaInfo + "</html>"));
                         Button addToFavoritesButton = new Button("Add to favorites");
@@ -176,7 +173,6 @@ public class View implements ActionListener {
 
         frame.pack();
         frame.setVisible(true);
-
 
     }
 
@@ -270,7 +266,6 @@ public class View implements ActionListener {
         JMenuItem alleItem = new JMenuItem("Alle");
         medieMenu.add(alleItem);
 
-
         alleItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -295,7 +290,6 @@ public class View implements ActionListener {
                 falsetestAlle();
                 falseTestSingle();
                 truefilm();
-
 
                 buildView();
 
