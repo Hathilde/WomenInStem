@@ -1,3 +1,5 @@
+import CustomExceptions.NoMediaFoundException;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -185,7 +187,6 @@ public class View implements ActionListener {
 
     }
 
-
     // MENU-BAR //
     private void makeMenuBar (JFrame frame) {
         frame.setJMenuBar(createMenuBar());
@@ -209,7 +210,6 @@ public class View implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //System.out.println("ActionEvent: " + txt.getText());
                 singleMedie = new ArrayList<>();
                 singleMedie.removeAll(singleMedie);
 
@@ -223,30 +223,37 @@ public class View implements ActionListener {
 
                 buildView();
 
-                for (int i = 0; i < medier.size(); i++) {
-                    String title = medier.get(i).getTitle();
+                try {
 
-                    if (txt.getText().equals(title)) {
-                        singleMedie.add(medier.get(i));
-                        //System.out.println("IF - TEKST : " + txt.getText() + " + " + title);
+                    for (int i = 0; i < medier.size(); i++) {
+                        String title = medier.get(i).getTitle();
 
+                        if (txt.getText().equals(title)) {
+                            singleMedie.add(medier.get(i));
+                            falsetestSerier();
+                            falsetestAlle();
+                            falsetestFilm();
+                            falseTestGenre();
+                            trueSingle();
 
+                            buildView();
+                        } else {
+                                throw new NoMediaFoundException();
+                        }
                     }
-                }
-                falsetestSerier();
-                falsetestAlle();
-                falsetestFilm();
-                falseTestGenre();
-                trueSingle();
 
-                buildView();
+
+                }  catch (NoMediaFoundException ex) {
+                        NoMediaFoundMethod(ex);
+                   // System.out.print("  ' " + txt.getText() + " ' ");
+
+                }
             }
         });
 
         txt.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //super.mouseClicked(e);
                 txt.setText("");
             }
         });
@@ -259,13 +266,7 @@ public class View implements ActionListener {
         ReadData dataReaderGenre = new ReadData();
         dataReaderGenre.createSortedMediaObjectList();
 
-        /* ReadData genreHalløj = new ReadData();
-        genreHalløj.reader("./film.txt");
-        genreHalløj.reader("./serier.txt");
-        */
-
         Arrays.toString(dataReaderGenre.getGenreArray());
-
 
         JMenuItem alleGenreItm = new JMenuItem("Alle");
         genreMenu.add(alleGenreItm);
@@ -273,7 +274,7 @@ public class View implements ActionListener {
         alleGenreItm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("ActionEvent: alle Genre!");
+
                 falsetestFilm();
                 falsetestSerier();
                 falseTestSingle();
@@ -291,7 +292,6 @@ public class View implements ActionListener {
                 @Override
                 public void actionPerformed(ActionEvent e) {
 
-                    System.out.println("ActionEvent: " + "HIHIHIHIHI");
                     genreMedier = new ArrayList<>();
                     genreMedier.removeAll(genreMedier);
 
@@ -307,10 +307,7 @@ public class View implements ActionListener {
 
                     for (int i = 0; i < medier.size(); i++) {
                         List<String> genreString = medier.get(i).getGenre();
-                        //System.out.println(medier.get(i).getGenre());
-                        //System.out.println(nyGenreItem.getText());
-                        //System.out.println(genreString.toString());
-                        //System.out.println("FOR - TEKST : " + nyGenreItem + " + hej ");
+
                         if (genreString.toString().contains(nyGenreItem.getText())) {
 
                             //System.out.println("Er vi i IF???");
@@ -329,11 +326,6 @@ public class View implements ActionListener {
                 }
 
             });
-
-            //System.out.println("Hihi");
-
-
-
 
         }
 
@@ -439,11 +431,51 @@ public class View implements ActionListener {
         return genreBoolean = false;
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
         //frame.setBackground(Color.red);
 
     }
 
+
+    public void NoMediaFoundMethod(NoMediaFoundException ex) {
+
+        JFrame frameNoMediaException = new JFrame("Hovsa!");
+        container = frame.getContentPane();
+        //container = frameNoMediaException.getContentPane();
+        font = new Font("Sans-Serif", Font.PLAIN, 60);
+        output = new JTextField("0");
+        JPanel panelNoMediaException = new JPanel();
+        container.setSize(100,100);
+
+        JLabel label2 = new JLabel(("<html>" + ex.getMessage() + "</html>"));
+        Button buttonOk = new Button("Ok");
+        buttonOk.setSize(10,10);
+
+
+        panelNoMediaException.add(label2);
+        panelNoMediaException.add(buttonOk);
+        panelNoMediaException.setLayout(new FlowLayout());
+
+        frameNoMediaException.setPreferredSize(new Dimension(400,125));
+
+        frameNoMediaException.add(panelNoMediaException);
+        frameNoMediaException.pack();
+        frameNoMediaException.setLocationRelativeTo(null);
+
+        //Lav TRYk PÅ OK, OG DEN LUKKER. - MANGLER.
+        //
+
+        frameNoMediaException.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        frameNoMediaException.setVisible(true);
+
+    }
+
+
 }
+
+
+
+
+
