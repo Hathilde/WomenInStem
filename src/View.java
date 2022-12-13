@@ -25,10 +25,14 @@ public class View implements ActionListener {
 
     List<Medier> singleMedie;
 
+    List<Medier> genreMedier;
+
     boolean alleBoolean;
     boolean filmBoolean;
     boolean serieBoolean;
     boolean singleBoolean;
+
+    boolean genreBoolean;
 
 
 
@@ -44,6 +48,9 @@ public class View implements ActionListener {
 
         } else if (singleBoolean){
             return singleMedie;
+
+        } else if (genreBoolean){
+            return genreMedier;
 
         } else {
             return dataReader.getSortedMediaObjects();
@@ -65,6 +72,8 @@ public class View implements ActionListener {
         alleBoolean = true;
         filmBoolean = false;
         serieBoolean = false;
+        genreBoolean = false;
+        singleBoolean = false;
 
         frame = new JFrame("PseudoFlix");
         container = frame.getContentPane();
@@ -188,7 +197,7 @@ public class View implements ActionListener {
         menuBar.add(createMedierMenu());
         menuBar.add(createGenreMenu());
 
-        // TEST:
+        // SEARCH BAR AND ACTIONLISTENER:
         menuBar.add(new JSeparator());
         menuBar.add(Box.createHorizontalGlue());
         JTextField txt;
@@ -207,6 +216,7 @@ public class View implements ActionListener {
                 falsetestFilm();
                 falsetestSerier();
                 falseTestSingle();
+                falseTestGenre();
                 truealle();
 
                 getListOfAllMedia();
@@ -220,14 +230,16 @@ public class View implements ActionListener {
                         singleMedie.add(medier.get(i));
                         //System.out.println("IF - TEKST : " + txt.getText() + " + " + title);
 
-                        falsetestSerier();
-                        falsetestAlle();
-                        falsetestFilm();
-                        trueSingle();
 
-                        buildView();
                     }
                 }
+                falsetestSerier();
+                falsetestAlle();
+                falsetestFilm();
+                falseTestGenre();
+                trueSingle();
+
+                buildView();
             }
         });
 
@@ -244,20 +256,87 @@ public class View implements ActionListener {
     private JMenu createGenreMenu() {
         JMenu genreMenu = new JMenu("Genre");
 
-        ReadData genreHalløj = new ReadData();
+        ReadData dataReaderGenre = new ReadData();
+        dataReaderGenre.createSortedMediaObjectList();
+
+        /* ReadData genreHalløj = new ReadData();
         genreHalløj.reader("./film.txt");
         genreHalløj.reader("./serier.txt");
+        */
 
-        Arrays.toString(genreHalløj.getGenreArray());
+        Arrays.toString(dataReaderGenre.getGenreArray());
 
-        JMenuItem nyGenreItem;
+
         JMenuItem alleGenreItm = new JMenuItem("Alle");
         genreMenu.add(alleGenreItm);
 
-        for (String currentGenre : genreHalløj.getGenreArray()) {
-            nyGenreItem = new JMenuItem(currentGenre);
-            genreMenu.add(currentGenre);
+        alleGenreItm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("ActionEvent: alle Genre!");
+                falsetestFilm();
+                falsetestSerier();
+                falseTestSingle();
+                falseTestGenre();
+                truealle();
+
+                buildView();
+            }
+        });
+
+        for (String currentGenre : dataReaderGenre.getGenreArray()) {
+          JMenuItem nyGenreItem = new JMenuItem(currentGenre);
+            genreMenu.add(nyGenreItem);
+            nyGenreItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    System.out.println("ActionEvent: " + "HIHIHIHIHI");
+                    genreMedier = new ArrayList<>();
+                    genreMedier.removeAll(genreMedier);
+
+                    falsetestFilm();
+                    falsetestSerier();
+                    falseTestSingle();
+                    falseTestGenre();
+                    truealle();
+
+                    getListOfAllMedia();
+
+                    buildView();
+
+                    for (int i = 0; i < medier.size(); i++) {
+                        List<String> genreString = medier.get(i).getGenre();
+                        //System.out.println(medier.get(i).getGenre());
+                        //System.out.println(nyGenreItem.getText());
+                        //System.out.println(genreString.toString());
+                        //System.out.println("FOR - TEKST : " + nyGenreItem + " + hej ");
+                        if (genreString.toString().contains(nyGenreItem.getText())) {
+
+                            //System.out.println("Er vi i IF???");
+                            genreMedier.add(medier.get(i));
+
+                        }
+
+                    }
+                    falsetestSerier();
+                    falsetestAlle();
+                    falsetestFilm();
+                    falseTestSingle();
+                    trueGenre();
+
+                    buildView();
+                }
+
+            });
+
+            //System.out.println("Hihi");
+
+
+
+
         }
+
 
         return genreMenu;
     }
@@ -273,6 +352,7 @@ public class View implements ActionListener {
                 falsetestFilm();
                 falsetestSerier();
                 falseTestSingle();
+                falseTestGenre();
                 truealle();
 
                 buildView();
@@ -289,6 +369,7 @@ public class View implements ActionListener {
                 falsetestSerier();
                 falsetestAlle();
                 falseTestSingle();
+                falseTestGenre();
                 truefilm();
 
                 buildView();
@@ -305,6 +386,7 @@ public class View implements ActionListener {
                 falsetestAlle();
                 falsetestFilm();
                 falseTestSingle();
+                falseTestGenre();
                 trueserier();
 
                 buildView();
@@ -349,6 +431,13 @@ public class View implements ActionListener {
         return singleBoolean = false;
     }
 
+    public boolean trueGenre() {
+        return genreBoolean = true;
+    }
+
+    public boolean falseTestGenre() {
+        return genreBoolean = false;
+    }
 
 
     @Override
