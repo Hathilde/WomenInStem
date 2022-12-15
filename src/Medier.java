@@ -10,15 +10,18 @@ import java.util.List;
 
         private String imgPath;
 
-        private HashSet<String> allGenres;
 
-        Medier (String title, String year, List <String> genre, String rating, String imgPath ){
+
+
+
+        Medier (String title, String year, List <String> genre, String rating, String imgPath){
             this.title = title;
             this.year = year;
             this.genre = genre; //new ArrayList<>();
             this.rating = rating;
             this.imgPath = imgPath;
-            this.allGenres = allGenres;
+
+
 
         }
 
@@ -43,13 +46,16 @@ import java.util.List;
             return imgPath;
         }
 
+
+
         public String toString(){
             String title =  "Titlen er " + getTitle() + ". ";
             String year = "Årene den er lavet er" + getYear() + ". ";
             String genre = "Genren er " + getGenre() + ". ";
             String IMDBrating = "IMDB-ratingen er " + getRating() + ". ";
 
-            String finalString = title + "<br>" + year + "<br>" + genre + "<br>" + IMDBrating;
+
+            String finalString = title + "<br>" + year + "<br>" + genre + "<br>" + IMDBrating + "<br>";
 
             return finalString;
         }

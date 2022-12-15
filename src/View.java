@@ -8,14 +8,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import javax.swing.JScrollPane;
-import javax.swing.JList;
 
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-public class View implements ActionListener {
+public class View {
 
     JFrame frame;
     Container container;
@@ -25,9 +25,13 @@ public class View implements ActionListener {
 
     List<Medier> medier;
 
+    List<Medier> mineFavoritter;
+
     List<Medier> singleMedie;
 
     List<Medier> genreMedier;
+
+
 
     boolean alleBoolean;
     boolean filmBoolean;
@@ -36,6 +40,7 @@ public class View implements ActionListener {
 
     boolean genreBoolean;
 
+    boolean mineFavoritterBoolean;
 
 
     public List<Medier> getListOfAllMedia() {
@@ -43,18 +48,27 @@ public class View implements ActionListener {
         dataReader.createSortedMediaObjectList();
 
         if (filmBoolean) {
+            System.out.println("getListOfAllMedia() filmboolean");
             return dataReader.getSortedFilmObjects();
 
         } else if (serieBoolean) {
+            System.out.println("getListOfAllMedia() serieBoolean");
             return dataReader.getSortedSerierObjects();
 
-        } else if (singleBoolean){
+        } else if (singleBoolean) {
+            System.out.println("getListOfAllMedia() singleBoolean");
             return singleMedie;
 
-        } else if (genreBoolean){
+        } else if (genreBoolean) {
+            System.out.println("getListOfAllMedia() genreBoolean");
             return genreMedier;
 
+        } else if (mineFavoritterBoolean) {
+            System.out.println("getListOfAllMedia() mineFavoritterBoolean");
+            return mineFavoritter;
+
         } else {
+            System.out.println(" getListOfAllMedia() alle");
             return dataReader.getSortedMediaObjects();
 
         }
@@ -65,17 +79,23 @@ public class View implements ActionListener {
         List<String> imgPathList = new ArrayList<>();
 
         for (Medier mediaObject : getListOfAllMedia()) {
-                imgPathList.add(mediaObject.getImgPath());
-            }
+            imgPathList.add(mediaObject.getImgPath());
+        }
 
         return imgPathList;
     }
+
     public View() {
-        alleBoolean = true;
+
         filmBoolean = false;
         serieBoolean = false;
         genreBoolean = false;
         singleBoolean = false;
+        mineFavoritterBoolean = false;
+        alleBoolean = true;
+
+        mineFavoritter = new ArrayList<>();
+
 
         frame = new JFrame("PseudoFlix");
         container = frame.getContentPane();
@@ -83,7 +103,7 @@ public class View implements ActionListener {
         output = new JTextField("0");
         buttonPanel = new JPanel();
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        frame.setSize(1650,1080);
+        frame.setSize(1650, 1080);
 
         buttonPanel.setPreferredSize(new Dimension(1000, 5000));
         buttonPanel.setLayout(new FlowLayout());
@@ -97,15 +117,16 @@ public class View implements ActionListener {
 
 
     private void buildView() {
-        buttonPanel.removeAll();
 
-        buttonPanel.removeAll();
+        buttonPanel.removeAll();                //Fjerner (nulstiller) alle viste medier
 
-        medier = getListOfAllMedia();
+        medier = getListOfAllMedia();           //Fanger den korrekte ArrayListe af medier, som skal vises
+
         int count = 0;
 
         for (int i = 0; i < medier.size(); i++) {
             String path = medier.get(i).getImgPath();
+            instans = medier.get(i);
             if (path.endsWith("jpg")) {
                 ImageIcon ii = null;
                 try {
@@ -125,36 +146,32 @@ public class View implements ActionListener {
                 button.setContentAreaFilled(false);
                 button.setBorderPainted(false);
 
+                //Kreation af pop-up-vinduet:
                 String title = medier.get(i).getTitle();
                 String specificMediaInfo = medier.get(i).toString();
 
 
-                button.addActionListener(new ActionListener() {
+                button.addActionListener(new ActionListener() {         //klikker på pop-up vindue
                     @Override
-                    public void actionPerformed(ActionEvent e) {
 
-                        JFrame frameSpecifikMedia = new JFrame(title);
-                        container = frame.getContentPane();
-                        font = new Font("Sans-Serif", Font.PLAIN, 60);
-                        output = new JTextField("0");
-                        JPanel buttonPanelIndre = new JPanel();
-                        frameSpecifikMedia.setSize(750,750);
 
-                        buttonPanelIndre.setLayout(new GridLayout(2,2, 2 ,5 ));
 
-                        JLabel label1 = new JLabel(("<html>" + specificMediaInfo + "</html>"));
-                        Button addToFavoritesButton = new Button("Add to favorites");
-                        addToFavoritesButton.setSize(5,5);
-                        Button playButton = new Button("Play");
 
-                        playButton.addActionListener(new ActionListener() {
+
+
+                        JButton playButton = new JButton("Afspil");
+                        playButton.addActionListener(new ActionListener() {     //klikker på play-knap
+
                             @Override
                             public void actionPerformed(ActionEvent e) {
+
                                 playButton.setBackground(Color.RED);
+                                playButton.setOpaque(true);
+                                playButton.setBorderPainted(false);
                             }
                         });
 
-                        buttonPanelIndre.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+                        jPanelIndre.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
                         JLabel billede = null;
                         try {
@@ -162,18 +179,20 @@ public class View implements ActionListener {
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
-                        buttonPanelIndre.add(billede);
-                        buttonPanelIndre.add(label1);
-                        buttonPanelIndre.add(addToFavoritesButton);
-                        buttonPanelIndre.add(playButton);
 
-                        frameSpecifikMedia.add(buttonPanelIndre);
+                        jPanelIndre.add(billede);
+
+                        jPanelIndre.add(label1);
+                        jPanelIndre.add(addToFavoritesButton);
+                        jPanelIndre.add(playButton);
+
+                        frameSpecifikMedia.add(jPanelIndre);
                         frameSpecifikMedia.setVisible(true);
+
                     }
+
                 });
-
             }
-
         }
 
         buttonPanel.revalidate();
@@ -187,79 +206,103 @@ public class View implements ActionListener {
 
     }
 
+
     // MENU-BAR //
-    private void makeMenuBar (JFrame frame) {
+    private void makeMenuBar(JFrame frame) {
         frame.setJMenuBar(createMenuBar());
     }
+
+    private JButton favoritButton() {
+        JButton favoritButton = new JButton("Mine Favoritter");
+        favoritButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                allBooleansFalse();
+                trueMineFavoritter();
+                buildView();
+            }
+        });
+
+        return favoritButton;
+    }
+
+
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
-        JButton favoritButton = new JButton("Mine Favoritter!!");
-        menuBar.add(favoritButton);
+        //JButton favoritButton = new JButton("Mine Favoritter!!");
+        menuBar.add(favoritButton());
         menuBar.add(createMedierMenu());
         menuBar.add(createGenreMenu());
 
-        // SEARCH BAR AND ACTIONLISTENER:
         menuBar.add(new JSeparator());
         menuBar.add(Box.createHorizontalGlue());
+
+
+            try {
+                menuBar.add(createSearchMenu());
+            } catch (NoMediaFoundException ex) {
+               NoMediaFoundMethod(ex);
+            }
+
+
+        // SEARCH BAR AND ACTIONLISTENER:
+
+        return menuBar;
+
+    }
+
+    private JTextField createSearchMenu() throws NoMediaFoundException {
+
         JTextField txt;
-        txt = new JTextField("   Søg her...  ",25);
+        txt = new JTextField("   Søg her...  ", 25);
         txt.setMaximumSize(txt.getPreferredSize());
-        menuBar.add(txt);
 
         txt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                singleMedie = new ArrayList<>();
-                singleMedie.removeAll(singleMedie);
 
-                falsetestFilm();
-                falsetestSerier();
-                falseTestSingle();
-                falseTestGenre();
-                truealle();
+                    singleMedie = new ArrayList<>();
+                    singleMedie.clear();
 
-                getListOfAllMedia();
+                    allBooleansFalse();
+                    truealle();
 
-                buildView();
+                    buildView();
 
-                try {
+                    if {
 
-                    for (int i = 0; i < medier.size(); i++) {
-                        String title = medier.get(i).getTitle();
+                         for (int i = 0; i < medier.size(); i++) {
 
-                        if (txt.getText().equals(title)) {
-                            singleMedie.add(medier.get(i));
-                            falsetestSerier();
-                            falsetestAlle();
-                            falsetestFilm();
-                            falseTestGenre();
-                            trueSingle();
+                                String title = medier.get(i).getTitle();
+                                System.out.print(" I FOR ' " + txt.getText() + " ' " + title);
 
-                            buildView();
-                        } else {
-                                throw new NoMediaFoundException();
-                        }
+                                if (txt.getText().equalsIgnoreCase(title)) {
+                                  singleMedie.add(medier.get(i));
+                                 allBooleansFalse();
+                                 trueSingle();
+
+                                    buildView();
+                             }
+
+                    }
+
+                    } else {
+                        throw new NoMediaFoundException();              //FIX THIS.... PLZ.
                     }
 
 
-                }  catch (NoMediaFoundException ex) {
-                        NoMediaFoundMethod(ex);
-                   // System.out.print("  ' " + txt.getText() + " ' ");
-
-                }
             }
         });
-
         txt.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 txt.setText("");
             }
         });
-        return menuBar;
-
+        return txt;
     }
+
     private JMenu createGenreMenu() {
         JMenu genreMenu = new JMenu("Genre");
 
@@ -271,14 +314,13 @@ public class View implements ActionListener {
         JMenuItem alleGenreItm = new JMenuItem("Alle");
         genreMenu.add(alleGenreItm);
 
+
+
         alleGenreItm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                falsetestFilm();
-                falsetestSerier();
-                falseTestSingle();
-                falseTestGenre();
+                allBooleansFalse();
                 truealle();
 
                 buildView();
@@ -286,7 +328,7 @@ public class View implements ActionListener {
         });
 
         for (String currentGenre : dataReaderGenre.getGenreArray()) {
-          JMenuItem nyGenreItem = new JMenuItem(currentGenre);
+            JMenuItem nyGenreItem = new JMenuItem(currentGenre);
             genreMenu.add(nyGenreItem);
             nyGenreItem.addActionListener(new ActionListener() {
                 @Override
@@ -295,10 +337,7 @@ public class View implements ActionListener {
                     genreMedier = new ArrayList<>();
                     genreMedier.removeAll(genreMedier);
 
-                    falsetestFilm();
-                    falsetestSerier();
-                    falseTestSingle();
-                    falseTestGenre();
+                    allBooleansFalse();
                     truealle();
 
                     getListOfAllMedia();
@@ -316,22 +355,17 @@ public class View implements ActionListener {
                         }
 
                     }
-                    falsetestSerier();
-                    falsetestAlle();
-                    falsetestFilm();
-                    falseTestSingle();
+                    allBooleansFalse();
                     trueGenre();
 
                     buildView();
                 }
-
             });
-
         }
-
 
         return genreMenu;
     }
+
     private JMenu createMedierMenu() {
         JMenu medieMenu = new JMenu("Medier");
         JMenuItem alleItem = new JMenuItem("Alle");
@@ -341,10 +375,7 @@ public class View implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                falsetestFilm();
-                falsetestSerier();
-                falseTestSingle();
-                falseTestGenre();
+                allBooleansFalse();
                 truealle();
 
                 buildView();
@@ -358,10 +389,7 @@ public class View implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                falsetestSerier();
-                falsetestAlle();
-                falseTestSingle();
-                falseTestGenre();
+                allBooleansFalse();
                 truefilm();
 
                 buildView();
@@ -375,10 +403,7 @@ public class View implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                falsetestAlle();
-                falsetestFilm();
-                falseTestSingle();
-                falseTestGenre();
+                allBooleansFalse();
                 trueserier();
 
                 buildView();
@@ -389,28 +414,72 @@ public class View implements ActionListener {
         return medieMenu;
     }
 
-    public boolean truealle(){
+    public void allBooleansFalse() {
+
+        falsetestAlle();        //1
+        falsetestFilm();        //2
+        falseTestSingle();      //3
+        falseTestGenre();       //4
+        falseMineFavoritter();  //5
+        falsetestSerier();      //6
+
+    }
+
+    public void NoMediaFoundMethod(NoMediaFoundException ex) {
+
+        JFrame frameNoMediaException = new JFrame("Hovsa!");
+        container = frame.getContentPane();
+        //container = frameNoMediaException.getContentPane();
+        font = new Font("Sans-Serif", Font.PLAIN, 60);
+        output = new JTextField("0");
+        JPanel panelNoMediaException = new JPanel();
+        container.setSize(100, 100);
+
+        JLabel label2 = new JLabel(("<html>" + ex.getMessage() + "</html>"));
+        Button buttonOk = new Button("Ok");
+        buttonOk.setSize(10, 10);
+
+        panelNoMediaException.add(label2);
+        panelNoMediaException.add(buttonOk);
+        panelNoMediaException.setLayout(new FlowLayout());
+
+        frameNoMediaException.setPreferredSize(new Dimension(400, 125));
+
+        frameNoMediaException.add(panelNoMediaException);
+        frameNoMediaException.pack();
+        frameNoMediaException.setLocationRelativeTo(null);
+
+        //Lav TRYk PÅ OK, OG DEN LUKKER. - MANGLER.
+        //
+
+        //frameNoMediaException.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        frameNoMediaException.setVisible(true);
+
+    }
+
+    public boolean truealle() {
         return alleBoolean = true;
     }
 
-    public boolean truefilm(){
+    public boolean truefilm() {
         return filmBoolean = true;
     }
 
-    public boolean trueserier(){
+    public boolean trueserier() {
         return serieBoolean = true;
     }
 
 
-    public boolean falsetestAlle(){
+    public boolean falsetestAlle() {
         return alleBoolean = false;
     }
 
-    public boolean falsetestFilm(){
+    public boolean falsetestFilm() {
         return filmBoolean = false;
     }
 
-    public boolean falsetestSerier(){
+    public boolean falsetestSerier() {
 
         return serieBoolean = false;
     }
@@ -431,50 +500,16 @@ public class View implements ActionListener {
         return genreBoolean = false;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        //frame.setBackground(Color.red);
-
+    public boolean trueMineFavoritter() {
+        return mineFavoritterBoolean = true;
     }
 
-
-    public void NoMediaFoundMethod(NoMediaFoundException ex) {
-
-        JFrame frameNoMediaException = new JFrame("Hovsa!");
-        container = frame.getContentPane();
-        //container = frameNoMediaException.getContentPane();
-        font = new Font("Sans-Serif", Font.PLAIN, 60);
-        output = new JTextField("0");
-        JPanel panelNoMediaException = new JPanel();
-        container.setSize(100,100);
-
-        JLabel label2 = new JLabel(("<html>" + ex.getMessage() + "</html>"));
-        Button buttonOk = new Button("Ok");
-        buttonOk.setSize(10,10);
-
-
-        panelNoMediaException.add(label2);
-        panelNoMediaException.add(buttonOk);
-        panelNoMediaException.setLayout(new FlowLayout());
-
-        frameNoMediaException.setPreferredSize(new Dimension(400,125));
-
-        frameNoMediaException.add(panelNoMediaException);
-        frameNoMediaException.pack();
-        frameNoMediaException.setLocationRelativeTo(null);
-
-        //Lav TRYk PÅ OK, OG DEN LUKKER. - MANGLER.
-        //
-
-        frameNoMediaException.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        frameNoMediaException.setVisible(true);
-
+    public boolean falseMineFavoritter() {
+        return mineFavoritterBoolean = false;
     }
 
 
 }
-
 
 
 

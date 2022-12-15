@@ -55,6 +55,8 @@ public class ReadData {
 
             String rating = singleMediaMetaData[3];
 
+
+
             if (singleMediaMetaData.length > 4) {
 
                 String seasonsAndEpisodes = singleMediaMetaData[4];

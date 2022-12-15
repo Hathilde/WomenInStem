@@ -17,7 +17,6 @@ public class Serier extends Medier {
 
     }
 
-
     @Override
     public String toString(){
         return super.toString() + "<br>" + "Sæsoner og episoder " + getSeasonsAndEpisodes();
