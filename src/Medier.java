@@ -1,20 +1,24 @@
 import java.util.*;
 
     public abstract class Medier {
+        // 5 private felter //
         private String title;
         private String year;
         private List<String> genre;
         private String rating;
         private String imgPath;
 
+        // Konstruktøren tager 5 argumenter//
         Medier (String title, String year, List <String> genre, String rating, String imgPath ){
+            // Ved brug af this. tildeles værdien af parameteren til instans-variablen for det aktuelle objekt.
             this.title = title;
             this.year = year;
-            this.genre = genre; //new ArrayList<>();
+            this.genre = genre;
             this.rating = rating;
             this.imgPath = imgPath;
-
         }
+
+        //Get-metoder//
 
         public String getYear() {
             return year;
@@ -36,6 +40,7 @@ import java.util.*;
             return imgPath;
         }
 
+        //toString()-metoden returnerer objektet repræsenteret som tekststrenge.
         public String toString(){
             String title =  "Titlen er " + getTitle() + ". ";
             String year = "Årene den er lavet er" + getYear() + ". ";

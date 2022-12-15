@@ -4,6 +4,7 @@ import java.util.*;
 
 public class ReadData {
 
+    //Klassen har 6 private felter; 3 Arraylister, et array samt to objekter af ReadData.
     private ArrayList<Medier> allMediaObjects;
     private ArrayList<Medier> allFilmObjects;
     private ArrayList<Medier> allSerierObjects;
@@ -14,31 +15,43 @@ public class ReadData {
 
     private ReadData dataReaderSerier;
 
+    //Konstruktøren instansierer de 3 arraylister.
     public ReadData() {
         allFilmObjects = new ArrayList<>();
         allSerierObjects = new ArrayList<>();
         allMediaObjects = new ArrayList<>();
     }
 
+    //createAllMediaObjectsList() kalder på metoden reader () med de to file-paths.
     public void createAllMediaObjectsList() {
         reader("./film.txt");
         reader("./serier.txt");
     }
 
+    //reader() tager et filePath som argument.
     public void reader(String filePath) {
 
         File file = new File(filePath);
         String[] singleMediaMetaData;
 
         Scanner s = null;
-
+        //Ved brug af en scanner, læses filerne ind.
         try {
            s = new Scanner(file, "iso-8859-1");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+        //De to plakat-filer instantieres
         String baseFilmPath = (new File("filmplakater")).getAbsolutePath();
         String baseSeriePath = (new File("serieforsider2")).getAbsolutePath();
+
+        //while-løkken løber igennem så længe scanneren har en linje at læse.
+        //Dataen fra film og serier bliver gemt i et array som kaldes singleMediaMetaData der består af tekststrenge. Daten opdeles ved hvert ";" symbol.
+        //Alle titler (som har plads 0 i array'et) gemmes i en tekststreng som kaldes title.
+        //Alle årstal (som har plads 1 i array'et) gemmes i en tekststreng som kaldes years.
+        //Alle genrer (som har plads 2 i array'et) gemmes i en tekststreng som kaldes genrerListe.
+        //Alle ratings (som har plads 3 i array'et) gemmes i en tekststreng som kaldes rating.
+
         while (s.hasNextLine()) {
 
             singleMediaMetaData = s.nextLine().trim().split(";");
@@ -52,6 +65,9 @@ public class ReadData {
 
             String rating = singleMediaMetaData[3];
 
+            // Hvis betingelsen opfyldes om at der er yderligere info på mediet end de 4 foreløbige pladser, oprettes et Serieobjekt.
+            //Alle sæsoner og episoder (som har plads 4 i array'et) gemmes i en tekststreng som kaldes seasonsAndEpisodes.
+            //Billede-pathen kan nu kobles op på det korrekte objekt.
             if (singleMediaMetaData.length > 4) {
 
                 String seasonsAndEpisodes = singleMediaMetaData[4];
@@ -62,6 +78,7 @@ public class ReadData {
                 allMediaObjects.add(serie);
                 allSerierObjects.add(serie);
 
+                //Ellers oprettes et FilmObjekt.
             } else {
                 String imgPath = baseFilmPath + "/" + title + ".jpg";
 
@@ -72,6 +89,8 @@ public class ReadData {
             }
         }
     }
+
+    //get-metoder
 
     public ArrayList<Medier> getAllMediaObjects() {
 
