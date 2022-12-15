@@ -6,7 +6,6 @@ import java.util.*;
         private List<String> genre;
         private String rating;
         private String imgPath;
-        private HashSet<String> allGenres;
 
         Medier (String title, String year, List <String> genre, String rating, String imgPath ){
             this.title = title;
@@ -14,7 +13,6 @@ import java.util.*;
             this.genre = genre; //new ArrayList<>();
             this.rating = rating;
             this.imgPath = imgPath;
-            this.allGenres = allGenres;
 
         }
 
