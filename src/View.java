@@ -43,7 +43,7 @@ public class View {
         ReadData dataReader = new ReadData();
         dataReader.createAllMediaObjectsList();
 
-        //Alt efter hvilken boolean der evaluerer til "true", vises den liste, der passer til boolean.
+        //Alt efter hvilken boolean der evaluerer til "true", vises en liste.
         if (filmBoolean) {
             return dataReader.getAllFilmObjects();
 
@@ -109,7 +109,6 @@ public class View {
 
     private void buildView() {
         buttonPanel.removeAll();
-
         medier = getListOfAllMedia();
 
         //Der instantieres et nyt ImageIcon med alle plakaterne. Disse laves til knapper og tilføjes til buttonPanel.
@@ -134,7 +133,7 @@ public class View {
                 String title = medier.get(i).getTitle();
                 String specificMediaInfo = medier.get(i).toString();
 
-                //ACTIONLISTENER VED TRYK PÅ SPECIFIKT MEDIE - POP-UP DANNES //
+                //-----ACTIONLISTENER VED TRYK PÅ SPECIFIKT MEDIE - POP-UP DANNES -----//
 
                 button.addActionListener(e -> {
 
@@ -167,7 +166,7 @@ public class View {
                     });
 
 
-                    // ACTIONLISTENER VED TRYK PÅ "Tilføj til favoritter"-knap //
+                    // -----ACTIONLISTENER VED TRYK PÅ "Tilføj til favoritter"-knap -----//
 
                     addToFavoritesButton.addActionListener(e1 -> {
 
@@ -192,7 +191,7 @@ public class View {
 
                         });
 
-                    // ACTIONLISTENER VED TRYK PÅ "Fjern fra favoritter"-KNAP //
+                    // -----ACTIONLISTENER VED TRYK PÅ "Fjern fra favoritter"-KNAP -----//
 
                     removeFromFavoritesButton.addActionListener(e2 -> {
                         for (int i1 = 0; i1 < medier.size(); i1++) {
@@ -204,7 +203,7 @@ public class View {
                         }
                     });
 
-                    //FÆRDIGGØRELSE AF POP-UP //
+                    //-----FÆRDIGGØRELSE AF POP-UP----- //
                     buttonPanelIndre.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
                     JLabel billede = null;
@@ -289,7 +288,7 @@ public class View {
             JMenuItem nyGenreItem = new JMenuItem(currentGenre);
             genreMenu.add(nyGenreItem);
 
-            // ACTIONLISTENER VED TRYK PÅ SPECIFIK GENRE
+            // -----ACTIONLISTENER VED TRYK PÅ SPECIFIK GENRE -----//
             nyGenreItem.addActionListener(e -> {
 
                 genreMedier = new ArrayList<>();
@@ -328,7 +327,7 @@ public class View {
         JMenuItem alleItem = new JMenuItem("Alle");
         medieMenu.add(alleItem);
 
-        //ACTION LISTENER VED TRYK PÅ "Alle" //
+        //----- ACTION LISTENER VED TRYK PÅ "Alle" ----- //
         alleItem.addActionListener(e -> {
 
             allBooleansFalse();
