@@ -105,6 +105,8 @@ public class ReadData {
         return allSerierObjects;
     }
 
+    //getGenreArray() kører først alle genrer igennem på alle media-objekter. Disse tilføjes til et HashSet
+    // som kaldes hashSetGenre.
     public String[] getGenreArray() {
 
         HashSet<String> hashSetGenre = new HashSet<>();
@@ -114,7 +116,7 @@ public class ReadData {
                 hashSetGenre.add(genre);
             }
         }
-
+        //Alle genrerne puttes nu ind i et array som kaldes arrayGenreMenu.
         arrayGenreMenu = new String[hashSetGenre.size()];
              int i = 0;
 

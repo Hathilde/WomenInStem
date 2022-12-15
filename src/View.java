@@ -13,8 +13,9 @@ import java.util.List;
 import javax.swing.JScrollPane;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
+//View-klassen bruges til brugergrænsefladen.
 public class View {
-
+    // View () har 15 felter; 5 specifikt til brugergrænsefladen, 4 lister og 6 booleans.
     JFrame frame;
     Container container;
     Font font;
@@ -37,11 +38,12 @@ public class View {
     boolean myFavouritesBoolean;
 
 
-
+    //getListOfAllMedia() laver en instans af ReadData som kaldes dataReader. På denne kan vi nu kalde createAllMediaObjectsList().
     public List<Medier> getListOfAllMedia() {
         ReadData dataReader = new ReadData();
         dataReader.createAllMediaObjectsList();
 
+        //Alt efter hvilken boolean der evaluerer til "true", vises den liste, der passer til boolean.
         if (filmBoolean) {
             return dataReader.getAllFilmObjects();
 
@@ -65,7 +67,7 @@ public class View {
         }
 
     }
-
+    //
     public List<String> returnListOfImages() {
         List<String> imgPathList = new ArrayList<>();
 
@@ -75,6 +77,8 @@ public class View {
 
         return imgPathList;
     }
+
+    //Konstruktøren som slutningsvist kalder på buildView()
     public View() {
         alleBoolean = true;
         filmBoolean = false;
@@ -106,10 +110,9 @@ public class View {
     private void buildView() {
         buttonPanel.removeAll();
 
-        buttonPanel.removeAll();
-
         medier = getListOfAllMedia();
 
+        //Der instantieres et nyt ImageIcon med alle plakaterne. Disse laves til knapper og tilføjes til buttonPanel.
         for (int i = 0; i < medier.size(); i++) {
             String path = medier.get(i).getImgPath();
             if (path.endsWith("jpg")) {
@@ -125,6 +128,8 @@ public class View {
                 button.setIcon(ii);
 
                 buttonPanel.add(button);
+
+                // Titlen på mediet samt specifikmedieinfo gemmes desuden i to tekststrenge.
 
                 String title = medier.get(i).getTitle();
                 String specificMediaInfo = medier.get(i).toString();
@@ -164,21 +169,19 @@ public class View {
 
                     // ACTIONLISTENER VED TRYK PÅ "Tilføj til favoritter"-knap //
 
-                    addToFavoritesButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
+                    addToFavoritesButton.addActionListener(e1 -> {
 
                             try {
-                                for (int i = 0; i < medier.size(); i++) {
-                                    String titlecurrent = medier.get(i).getTitle();
+                                for (int j = 0; j < medier.size(); j++) {
+                                    String titlecurrent = medier.get(j).getTitle();
 
                                     if (titlecurrent.equals(title)) {
 
-                                        if (myFavouritesList.contains(medier.get(i))) {
+                                        if (myFavouritesList.contains(medier.get(j))) {
                                             throw new AddToFavoritesException("Hej med dig throw new");
 
                                         } else {
-                                            myFavouritesList.add(medier.get(i));
+                                            myFavouritesList.add(medier.get(j));
                                         }
                                     }
                                 }
@@ -187,12 +190,11 @@ public class View {
                             }
 
 
-                        }
-                    });
+                        });
 
                     // ACTIONLISTENER VED TRYK PÅ "Fjern fra favoritter"-KNAP //
 
-                    removeFromFavoritesButton.addActionListener(e13 -> {
+                    removeFromFavoritesButton.addActionListener(e2 -> {
                         for (int i1 = 0; i1 < medier.size(); i1++) {
                             String titleCurrent = medier.get(i1).getTitle();
 
@@ -490,7 +492,7 @@ public class View {
         return genreBoolean = false;
     }
 
-
+    // EXCEPTIONS //
     public void NoMediaFoundMethod() {
 
         JFrame frameNoMediaException = new JFrame("Hovsa!");
