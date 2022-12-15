@@ -254,7 +254,7 @@ public class View {
         menuBar.add(Box.createHorizontalGlue());
         menuBar.add(createSearchMenu());
 
-        // ACTIONLISTENER VED TRYK PÅ KNAPPEN "Mine favoritter" //
+        //---- ACTIONLISTENER VED TRYK PÅ KNAPPEN "Mine favoritter" ----//
         myFavouritesButton.addActionListener(e -> {
             allBooleansFalse();
             trueMyFavourites ();
@@ -265,7 +265,7 @@ public class View {
         return menuBar;
     }
 
-    // GENRE-MENU //
+    // ----GENRE-MENU ----//
     private JMenu createGenreMenu() {
         JMenu genreMenu = new JMenu("Genre");
 
@@ -276,7 +276,7 @@ public class View {
 
         JMenuItem alleGenreItm = new JMenuItem("Alle");
         genreMenu.add(alleGenreItm);
-        // ACTIONLISTENER VED TRYK PÅ "Alle" //
+        // ----ACTIONLISTENER VED TRYK PÅ "Alle" ----//
         alleGenreItm.addActionListener(e -> {
 
             allBooleansFalse();
@@ -322,7 +322,7 @@ public class View {
         return genreMenu;
     }
 
-    // Medier-menu //
+    //---- Medier-menu ----//
     private JMenu createMedierMenu() {
         JMenu medieMenu = new JMenu("Medier");
         JMenuItem alleItem = new JMenuItem("Alle");
@@ -341,7 +341,7 @@ public class View {
         JMenuItem filmItem = new JMenuItem("Film");
         medieMenu.add(filmItem);
 
-        //ACTION LISTENER VED TRYK PÅ "Film" //
+        //---- ACTION LISTENER VED TRYK PÅ "Film" ----//
 
         filmItem.addActionListener(e -> {
 
@@ -352,7 +352,7 @@ public class View {
 
         });
 
-        //ACTION LISTENER VED TRYK PÅ "Serier" //
+        //----ACTION LISTENER VED TRYK PÅ "Serier" ----//
 
         JMenuItem serieItem = new JMenuItem("Serier");
         medieMenu.add(serieItem);
@@ -368,7 +368,7 @@ public class View {
         return medieMenu;
     }
 
-    // Search-menu //
+    // ----Search-menu ----//
     private JTextField createSearchMenu() {
 
         JTextField txt;
@@ -492,7 +492,7 @@ public class View {
         return genreBoolean = false;
     }
 
-    // EXCEPTIONS //
+    // ----EXCEPTIONS ----//
     public void NoMediaFoundMethod() {
 
         JFrame frameNoMediaException = new JFrame("Hovsa!");

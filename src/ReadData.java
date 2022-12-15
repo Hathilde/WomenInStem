@@ -90,7 +90,7 @@ public class ReadData {
         }
     }
 
-    //get-metoder
+    //----get-metoder ---- //
 
     public ArrayList<Medier> getAllMediaObjects() {
 
