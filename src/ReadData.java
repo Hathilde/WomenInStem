@@ -1,13 +1,10 @@
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class ReadData {
 
-    private ArrayList<Medier> sortedMediaObjects;
+    private ArrayList<Medier> allMediaObjects;
     private ArrayList<Medier> allFilmObjects;
     private ArrayList<Medier> allSerierObjects;
 
@@ -20,10 +17,10 @@ public class ReadData {
     public ReadData() {
         allFilmObjects = new ArrayList<>();
         allSerierObjects = new ArrayList<>();
-        sortedMediaObjects = new ArrayList<>();
+        allMediaObjects = new ArrayList<>();
     }
 
-    public void createSortedMediaObjectList() {
+    public void createAllMediaObjectsList() {
         reader("./film.txt");
         reader("./serier.txt");
     }
@@ -62,28 +59,30 @@ public class ReadData {
                 String imgPath = baseSeriePath+ "/" + title + ".jpg";
 
                 Serier serie = new Serier(title, years, genre, rating, imgPath, seasonsAndEpisodes);
-                sortedMediaObjects.add(serie);
+                allMediaObjects.add(serie);
                 allSerierObjects.add(serie);
 
             } else {
                 String imgPath = baseFilmPath + "/" + title + ".jpg";
 
                 Film film = new Film(title, years, genre, rating, imgPath);
-                sortedMediaObjects.add(film);
+                allMediaObjects.add(film);
                 allFilmObjects.add(film);
 
             }
         }
     }
 
-    public ArrayList<Medier> getSortedMediaObjects() {
+    public ArrayList<Medier> getAllMediaObjects() {
 
-        return sortedMediaObjects;
+        return allMediaObjects;
     }
-    public ArrayList<Medier> getSortedFilmObjects() {
+    public ArrayList<Medier> getAllFilmObjects() {
+
         return allFilmObjects;
     }
-    public ArrayList<Medier> getSortedSerierObjects() {
+    public ArrayList<Medier> getAllSerierObjects() {
+
         return allSerierObjects;
     }
 
@@ -91,7 +90,7 @@ public class ReadData {
 
         HashSet<String> hashSetGenre = new HashSet<>();
 
-        for (Medier current : getSortedMediaObjects()) {
+        for (Medier current : getAllMediaObjects()) {
             for(String genre : current.getGenre()) {
                 hashSetGenre.add(genre);
             }
@@ -109,7 +108,3 @@ public class ReadData {
     }
 
 }
-
-
-
-

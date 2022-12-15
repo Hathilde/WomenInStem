@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JScrollPane;
-import javax.swing.JList;
-
-
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class View {
@@ -25,7 +22,7 @@ public class View {
 
     List<Medier> singleMedie;
 
-    List<Medier> MineFavoritter;
+    List<Medier> myFavouritesList;
 
     List<Medier> genreMedier;
 
@@ -33,23 +30,21 @@ public class View {
     boolean filmBoolean;
     boolean serieBoolean;
     boolean singleBoolean;
-
     boolean genreBoolean;
-
-    boolean favoritKnap;
-    boolean mineFavoritterBoolean;
+    boolean favouriteButton;
+    boolean myFavouritesBoolean;
 
 
 
     public List<Medier> getListOfAllMedia() {
         ReadData dataReader = new ReadData();
-        dataReader.createSortedMediaObjectList();
+        dataReader.createAllMediaObjectsList();
 
         if (filmBoolean) {
-            return dataReader.getSortedFilmObjects();
+            return dataReader.getAllFilmObjects();
 
         } else if (serieBoolean) {
-            return dataReader.getSortedSerierObjects();
+            return dataReader.getAllSerierObjects();
 
         } else if (singleBoolean){
             return singleMedie;
@@ -58,12 +53,12 @@ public class View {
 
             return genreMedier;
 
-        } else if (mineFavoritterBoolean){
-            return MineFavoritter;
+        } else if (myFavouritesBoolean){
+            return myFavouritesList;
 
 
         } else {
-            return dataReader.getSortedMediaObjects();
+            return dataReader.getAllMediaObjects();
 
         }
 
@@ -99,8 +94,7 @@ public class View {
 
         frame.getContentPane().add(new JScrollPane(buttonPanel));
 
-        MineFavoritter = new ArrayList<>();
-
+        myFavouritesList = new ArrayList<>();
 
         buildView();
 
@@ -113,7 +107,6 @@ public class View {
         buttonPanel.removeAll();
 
         medier = getListOfAllMedia();
-        int count = 0;
 
         for (int i = 0; i < medier.size(); i++) {
             String path = medier.get(i).getImgPath();
@@ -131,7 +124,7 @@ public class View {
 
                 buttonPanel.add(button);
 
-                // Gør knappen usynlig.
+                // Gør knappen usynlig. Hvad gør disse?
                 button.setOpaque(false);
                 button.setContentAreaFilled(false);
                 button.setBorderPainted(false);
@@ -139,7 +132,7 @@ public class View {
                 String title = medier.get(i).getTitle();
                 String specificMediaInfo = medier.get(i).toString();
 
-
+                //ACTIONLISTENER VED TRYK PÅ SPECIFIKT MEDIE - POP-UP DANNES
 
                 button.addActionListener(new ActionListener() {
                     @Override
@@ -156,8 +149,7 @@ public class View {
 
                         JLabel label1 = new JLabel(("<html>" + specificMediaInfo + "</html>"));
 
-                        // Start ændring
-                        boolean favoritKnap = true;
+                        boolean favouriteButton = true;
 
                         JButton addToFavoritesButton = new JButton("Tilføj til favoritter");
 
@@ -166,44 +158,7 @@ public class View {
                         addToFavoritesButton.setSize(5,5);
                         JButton playButton = new JButton("Afspil");
 
-                        removeFromFavoritesButton.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                for (int i = 0; i < medier.size(); i++) {
-                                    String titlecurrent = medier.get(i).getTitle();
-
-                                    if (titlecurrent.equals(title)) {
-                                        MineFavoritter.remove(medier.get(i));
-
-                                    }
-                                }
-                            }
-                        });
-
-                        addToFavoritesButton.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-
-                                    for (int i = 0; i < medier.size(); i++) {
-                                        String titlecurrent = medier.get(i).getTitle();
-
-                                        if (titlecurrent.equals(title)) {
-
-                                                if(MineFavoritter.contains(medier.get(i))){
-                                                    System.out.println("MÅ MAN IKKE!!!");
-                                                } else {
-                                                    MineFavoritter.add(medier.get(i));
-                                                }
-
-
-
-
-                                        }
-                                    }
-
-
-                            }
-                        });
+                        // ACTIONLISTENER VED TRYK PÅ "Afspil"-knap
 
                         playButton.addActionListener(new ActionListener() {
                             @Override
@@ -214,7 +169,49 @@ public class View {
                                 playButton.setBorderPainted(false);
                             }
                         });
-                        //Slut ændring
+
+                        // ACTIONLISTENER VED TRYK PÅ "Tilføj til favoritter"-knap
+
+                        addToFavoritesButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+
+                                for (int i = 0; i < medier.size(); i++) {
+                                    String titlecurrent = medier.get(i).getTitle();
+
+                                    if (titlecurrent.equals(title)) {
+
+                                        if(myFavouritesList.contains(medier.get(i))){
+                                            System.out.println("MÅ MAN IKKE!!!");
+                                        } else {
+                                            myFavouritesList.add(medier.get(i));
+                                        }
+
+
+
+
+                                    }
+                                }
+
+
+                            }
+                        });
+
+                        // ACTIONLISTENER VED TRYK PÅ "Fjern fra favoritter"-KNAP.
+
+                        removeFromFavoritesButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                for (int i = 0; i < medier.size(); i++) {
+                                    String titlecurrent = medier.get(i).getTitle();
+
+                                    if (titlecurrent.equals(title)) {
+                                        myFavouritesList.remove(medier.get(i));
+                                    }
+                                }
+                            }
+                        });
+
 
                         buttonPanelIndre.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
@@ -323,7 +320,7 @@ public class View {
         JMenu genreMenu = new JMenu("Genre");
 
         ReadData dataReaderGenre = new ReadData();
-        dataReaderGenre.createSortedMediaObjectList();
+        dataReaderGenre.createAllMediaObjectsList();
 
         Arrays.toString(dataReaderGenre.getGenreArray());
 
@@ -445,7 +442,7 @@ public class View {
     }
 
     public boolean trueMineFavoritter() {
-        return mineFavoritterBoolean = true;
+        return myFavouritesBoolean = true;
     }
 
 
@@ -464,17 +461,17 @@ public class View {
     }
 
     public boolean falseMineFavoritter() {
-        return mineFavoritterBoolean = false;
+        return myFavouritesBoolean = false;
     }
 
     public boolean addedToFavorites() {
 
-        return favoritKnap = true;
+        return favouriteButton = true;
     }
 
     public boolean notAddedToFavorites() {
 
-        return favoritKnap = false;
+        return favouriteButton = false;
     }
 
     public void allBooleansFalse() {

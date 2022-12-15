@@ -1,17 +1,12 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
     public abstract class Medier {
         private String title;
         private String year;
         private List<String> genre;
         private String rating;
-
         private String imgPath;
-
         private HashSet<String> allGenres;
-
 
         Medier (String title, String year, List <String> genre, String rating, String imgPath ){
             this.title = title;
@@ -21,9 +16,7 @@ import java.util.List;
             this.imgPath = imgPath;
             this.allGenres = allGenres;
 
-
         }
-
 
         public String getYear() {
             return year;
@@ -41,7 +34,6 @@ import java.util.List;
             return title;
         }
 
-
         public String getImgPath() {
             return imgPath;
         }
@@ -57,5 +49,3 @@ import java.util.List;
             return finalString;
         }
     }
-
-

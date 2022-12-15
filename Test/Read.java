@@ -14,7 +14,7 @@ public class Read {
         dataReader.reader("./serier.txt");
       // assert(dataReader.getSortedMediaObjects().get(99), "Titlen er Yankee Doodle Dandy. Året den er lavet er 1942. Genren er [ Biography,  Drama,  Musical]. IMDB-ratingen er 7,7."");
 
-        System.out.println(dataReader.getSortedMediaObjects().get(99).getImgPath());
+        System.out.println(dataReader.getAllMediaObjects().get(99).getImgPath());
         //System.out.println(dataReader.getSortedMediaObjects());
 
     }
