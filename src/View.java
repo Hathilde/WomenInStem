@@ -1,3 +1,6 @@
+import CustomExceptions.AddToFavoritesException;
+import CustomExceptions.NoMediaFoundException;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +43,6 @@ public class View {
     boolean mineFavoritterBoolean;
 
 
-
     public List<Medier> getListOfAllMedia() {
         ReadData dataReader = new ReadData();
         dataReader.createSortedMediaObjectList();
@@ -51,14 +53,14 @@ public class View {
         } else if (serieBoolean) {
             return dataReader.getSortedSerierObjects();
 
-        } else if (singleBoolean){
+        } else if (singleBoolean) {
             return singleMedie;
 
         } else if (genreBoolean) {
 
             return genreMedier;
 
-        } else if (mineFavoritterBoolean){
+        } else if (mineFavoritterBoolean) {
             return MineFavoritter;
 
 
@@ -73,11 +75,12 @@ public class View {
         List<String> imgPathList = new ArrayList<>();
 
         for (Medier mediaObject : getListOfAllMedia()) {
-                imgPathList.add(mediaObject.getImgPath());
-            }
+            imgPathList.add(mediaObject.getImgPath());
+        }
 
         return imgPathList;
     }
+
     public View() {
         alleBoolean = true;
         filmBoolean = false;
@@ -91,7 +94,7 @@ public class View {
         output = new JTextField("0");
         buttonPanel = new JPanel();
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        frame.setSize(1650,1080);
+        frame.setSize(1650, 1080);
 
         buttonPanel.setPreferredSize(new Dimension(1000, 5000));
         buttonPanel.setLayout(new FlowLayout());
@@ -140,7 +143,6 @@ public class View {
                 String specificMediaInfo = medier.get(i).toString();
 
 
-
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -150,9 +152,9 @@ public class View {
                         font = new Font("Sans-Serif", Font.PLAIN, 60);
                         output = new JTextField("0");
                         JPanel buttonPanelIndre = new JPanel();
-                        frameSpecifikMedia.setSize(750,750);
+                        frameSpecifikMedia.setSize(750, 750);
 
-                        buttonPanelIndre.setLayout(new GridLayout(2,2, 2 ,5 ));
+                        buttonPanelIndre.setLayout(new GridLayout(2, 2, 2, 5));
 
                         JLabel label1 = new JLabel(("<html>" + specificMediaInfo + "</html>"));
 
@@ -163,7 +165,7 @@ public class View {
 
                         JButton removeFromFavoritesButton = new JButton("Fjern fra favoritter");
 
-                        addToFavoritesButton.setSize(5,5);
+                        addToFavoritesButton.setSize(5, 5);
                         JButton playButton = new JButton("Afspil");
 
                         removeFromFavoritesButton.addActionListener(new ActionListener() {
@@ -184,22 +186,25 @@ public class View {
                             @Override
                             public void actionPerformed(ActionEvent e) {
 
+                                try {
                                     for (int i = 0; i < medier.size(); i++) {
                                         String titlecurrent = medier.get(i).getTitle();
 
                                         if (titlecurrent.equals(title)) {
 
-                                                if(MineFavoritter.contains(medier.get(i))){
-                                                    System.out.println("MÅ MAN IKKE!!!");
-                                                } else {
-                                                    MineFavoritter.add(medier.get(i));
-                                                }
+                                            if (MineFavoritter.contains(medier.get(i))) {
+                                                throw new AddToFavoritesException("Hej med dig throw new");
 
-
+                                            } else {
+                                                MineFavoritter.add(medier.get(i));
+                                            }
 
 
                                         }
                                     }
+                                } catch(AddToFavoritesException ex) {
+                                    AddToFavortitesMethod();
+                                }
 
 
                             }
@@ -252,9 +257,10 @@ public class View {
 
 
     // MENU-BAR //
-    private void makeMenuBar (JFrame frame) {
+    private void makeMenuBar(JFrame frame) {
         frame.setJMenuBar(createMenuBar());
     }
+
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JButton favoritButton = new JButton("Mine Favoritter");
@@ -275,7 +281,7 @@ public class View {
         menuBar.add(new JSeparator());
         menuBar.add(Box.createHorizontalGlue());
         JTextField txt;
-        txt = new JTextField("   Søg her...  ",25);
+        txt = new JTextField("   Søg her...  ", 25);
         txt.setMaximumSize(txt.getPreferredSize());
         menuBar.add(txt);
 
@@ -289,23 +295,39 @@ public class View {
                 allBooleansFalse();
                 truealle();
 
-                getListOfAllMedia();
+              //  getListOfAllMedia();
 
                 buildView();
 
-                for (int i = 0; i < medier.size(); i++) {
-                    String title = medier.get(i).getTitle();
+                int optæller = 0;
 
-                    if (txt.getText().equalsIgnoreCase(title)) {
-                        singleMedie.add(medier.get(i));
-                        //System.out.println("IF - TEKST : " + txt.getText() + " + " + title);
+                try {
 
-                        allBooleansFalse();
-                        trueSingle();
+                    for (int i = 0; i < medier.size(); i++) {
+                        String title = medier.get(i).getTitle();
 
-                        buildView();
+
+                        if (txt.getText().equalsIgnoreCase(title)) {
+                            singleMedie.add(medier.get(i));
+
+                            allBooleansFalse();
+                            trueSingle();
+
+                            buildView();
+
+                        } else {
+                            optæller = optæller + 1;
+
+                            if (optæller == 200) {
+                                throw new NoMediaFoundException("Hej");
+                            }
+                        }
+
                     }
+                } catch(NoMediaFoundException ex) {
+                  NoMediaFoundMethod();
                 }
+
             }
         });
 
@@ -319,6 +341,7 @@ public class View {
         return menuBar;
 
     }
+
     private JMenu createGenreMenu() {
         JMenu genreMenu = new JMenu("Genre");
 
@@ -428,15 +451,15 @@ public class View {
         return medieMenu;
     }
 
-    public boolean truealle(){
+    public boolean truealle() {
         return alleBoolean = true;
     }
 
-    public boolean truefilm(){
+    public boolean truefilm() {
         return filmBoolean = true;
     }
 
-    public boolean trueserier(){
+    public boolean trueserier() {
         return serieBoolean = true;
     }
 
@@ -449,15 +472,17 @@ public class View {
     }
 
 
-    public boolean falsetestAlle(){
+    public boolean falsetestAlle() {
         return alleBoolean = false;
     }
 
-    public boolean falsetestFilm(){
+    public boolean falsetestFilm() {
         return filmBoolean = false;
     }
 
-    public boolean falsetestSerier(){ return serieBoolean = false; }
+    public boolean falsetestSerier() {
+        return serieBoolean = false;
+    }
 
     public boolean falseTestSingle() {
         return singleBoolean = false;
@@ -497,20 +522,26 @@ public class View {
     }
 
 
-    /*
-    public void NoMediaFoundMethod(NoMediaFoundException ex) {
+    public void NoMediaFoundMethod() {
 
         JFrame frameNoMediaException = new JFrame("Hovsa!");
-        container = frame.getContentPane();
+        //container = frame.getContentPane();
         //container = frameNoMediaException.getContentPane();
         font = new Font("Sans-Serif", Font.PLAIN, 60);
         output = new JTextField("0");
         JPanel panelNoMediaException = new JPanel();
-        container.setSize(100, 100);
+        //container.setSize(100, 100);
 
-        JLabel label2 = new JLabel(("<html>" + ex.getMessage() + "</html>"));
+        JLabel label2 = new JLabel(("<html>" + "Der findes ingen medier der matchede din søgning" + "</html>"));
         Button buttonOk = new Button("Ok");
         buttonOk.setSize(10, 10);
+
+        buttonOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frameNoMediaException.setVisible(false);
+            }
+        });
 
         panelNoMediaException.add(label2);
         panelNoMediaException.add(buttonOk);
@@ -528,7 +559,48 @@ public class View {
         //frameNoMediaException.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         frameNoMediaException.setVisible(true);
-
-     */
-
     }
+
+    public void AddToFavortitesMethod() {
+
+        JFrame addToFavortitesExceptionFrame  = new JFrame("Hovsa!");
+       // container = frame.getContentPane();
+        //container = AddToFavortitesException.getContentPane();
+        font = new Font("Sans-Serif", Font.PLAIN, 60);
+        output = new JTextField("0");
+        JPanel panelAddToFavortitesEx = new JPanel();
+        //container.setSize(100, 100);
+
+        JLabel label2 = new JLabel(("<html>" + "Mediet er allerede tilføjet til favoritlisten" + "</html>"));
+        Button buttonOk = new Button("Ok");
+        buttonOk.setSize(10, 10);
+
+        panelAddToFavortitesEx.add(label2);
+        panelAddToFavortitesEx.add(buttonOk);
+
+
+
+       buttonOk.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               addToFavortitesExceptionFrame.setVisible(false);
+           }
+       });
+
+        panelAddToFavortitesEx.setLayout(new FlowLayout());
+
+        addToFavortitesExceptionFrame.setPreferredSize(new Dimension(400, 125));
+
+        addToFavortitesExceptionFrame.add(panelAddToFavortitesEx);
+        addToFavortitesExceptionFrame.pack();
+        addToFavortitesExceptionFrame.setLocationRelativeTo(null);
+
+        //Lav TRYk PÅ OK, OG DEN LUKKER. - MANGLER.
+        //
+
+        //AddToFavortitesException.setCloseOperation(EXIT_ON_CLOSE);
+
+        addToFavortitesExceptionFrame.setVisible(true);
+    }
+
+}

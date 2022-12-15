@@ -2,9 +2,10 @@ package CustomExceptions;
 
 public class NoMediaFoundException extends Exception {
 
-    public NoMediaFoundException() {
+    public NoMediaFoundException(String
+    message) {
 
-        super("Der er ikke nogle medier, som matcher din søgning");
+        super(message);
 
 
     }
