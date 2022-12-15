@@ -13,7 +13,7 @@ import javax.swing.JList;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-public class View implements ActionListener {
+public class View {
 
     JFrame frame;
     Container container;
@@ -25,10 +25,19 @@ public class View implements ActionListener {
 
     List<Medier> singleMedie;
 
+    List<Medier> MineFavoritter;
+
+    List<Medier> genreMedier;
+
     boolean alleBoolean;
     boolean filmBoolean;
     boolean serieBoolean;
     boolean singleBoolean;
+
+    boolean genreBoolean;
+
+    boolean favoritKnap;
+    boolean mineFavoritterBoolean;
 
 
 
@@ -44,6 +53,14 @@ public class View implements ActionListener {
 
         } else if (singleBoolean){
             return singleMedie;
+
+        } else if (genreBoolean) {
+
+            return genreMedier;
+
+        } else if (mineFavoritterBoolean){
+            return MineFavoritter;
+
 
         } else {
             return dataReader.getSortedMediaObjects();
@@ -65,6 +82,8 @@ public class View implements ActionListener {
         alleBoolean = true;
         filmBoolean = false;
         serieBoolean = false;
+        genreBoolean = false;
+        singleBoolean = false;
 
         frame = new JFrame("PseudoFlix");
         container = frame.getContentPane();
@@ -79,6 +98,9 @@ public class View implements ActionListener {
         makeMenuBar(frame);
 
         frame.getContentPane().add(new JScrollPane(buttonPanel));
+
+        MineFavoritter = new ArrayList<>();
+
 
         buildView();
 
@@ -118,6 +140,7 @@ public class View implements ActionListener {
                 String specificMediaInfo = medier.get(i).toString();
 
 
+
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -132,16 +155,66 @@ public class View implements ActionListener {
                         buttonPanelIndre.setLayout(new GridLayout(2,2, 2 ,5 ));
 
                         JLabel label1 = new JLabel(("<html>" + specificMediaInfo + "</html>"));
-                        Button addToFavoritesButton = new Button("Add to favorites");
+
+                        // Start ændring
+                        boolean favoritKnap = true;
+
+                        JButton addToFavoritesButton = new JButton("Tilføj til favoritter");
+
+                        JButton removeFromFavoritesButton = new JButton("Fjern fra favoritter");
+
                         addToFavoritesButton.setSize(5,5);
-                        Button playButton = new Button("Play");
+                        JButton playButton = new JButton("Afspil");
+
+                        removeFromFavoritesButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                for (int i = 0; i < medier.size(); i++) {
+                                    String titlecurrent = medier.get(i).getTitle();
+
+                                    if (titlecurrent.equals(title)) {
+                                        MineFavoritter.remove(medier.get(i));
+
+                                    }
+                                }
+                            }
+                        });
+
+                        addToFavoritesButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+
+                                    for (int i = 0; i < medier.size(); i++) {
+                                        String titlecurrent = medier.get(i).getTitle();
+
+                                        if (titlecurrent.equals(title)) {
+
+                                                if(MineFavoritter.contains(medier.get(i))){
+                                                    System.out.println("MÅ MAN IKKE!!!");
+                                                } else {
+                                                    MineFavoritter.add(medier.get(i));
+                                                }
+
+
+
+
+                                        }
+                                    }
+
+
+                            }
+                        });
 
                         playButton.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
+
                                 playButton.setBackground(Color.RED);
+                                playButton.setOpaque(true);
+                                playButton.setBorderPainted(false);
                             }
                         });
+                        //Slut ændring
 
                         buttonPanelIndre.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
@@ -154,6 +227,7 @@ public class View implements ActionListener {
                         buttonPanelIndre.add(billede);
                         buttonPanelIndre.add(label1);
                         buttonPanelIndre.add(addToFavoritesButton);
+                        buttonPanelIndre.add(removeFromFavoritesButton);
                         buttonPanelIndre.add(playButton);
 
                         frameSpecifikMedia.add(buttonPanelIndre);
@@ -183,12 +257,21 @@ public class View implements ActionListener {
     }
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
-        JButton favoritButton = new JButton("Mine Favoritter!!");
+        JButton favoritButton = new JButton("Mine Favoritter");
         menuBar.add(favoritButton);
         menuBar.add(createMedierMenu());
         menuBar.add(createGenreMenu());
 
-        // TEST:
+        favoritButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                allBooleansFalse();
+                trueMineFavoritter();
+
+                buildView();
+            }
+        });
+
         menuBar.add(new JSeparator());
         menuBar.add(Box.createHorizontalGlue());
         JTextField txt;
@@ -200,13 +283,10 @@ public class View implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //System.out.println("ActionEvent: " + txt.getText());
                 singleMedie = new ArrayList<>();
                 singleMedie.removeAll(singleMedie);
 
-                falsetestFilm();
-                falsetestSerier();
-                falseTestSingle();
+                allBooleansFalse();
                 truealle();
 
                 getListOfAllMedia();
@@ -216,13 +296,11 @@ public class View implements ActionListener {
                 for (int i = 0; i < medier.size(); i++) {
                     String title = medier.get(i).getTitle();
 
-                    if (txt.getText().equals(title)) {
+                    if (txt.getText().equalsIgnoreCase(title)) {
                         singleMedie.add(medier.get(i));
                         //System.out.println("IF - TEKST : " + txt.getText() + " + " + title);
 
-                        falsetestSerier();
-                        falsetestAlle();
-                        falsetestFilm();
+                        allBooleansFalse();
                         trueSingle();
 
                         buildView();
@@ -244,23 +322,64 @@ public class View implements ActionListener {
     private JMenu createGenreMenu() {
         JMenu genreMenu = new JMenu("Genre");
 
-        ReadData genreHalløj = new ReadData();
-        genreHalløj.reader("./film.txt");
-        genreHalløj.reader("./serier.txt");
+        ReadData dataReaderGenre = new ReadData();
+        dataReaderGenre.createSortedMediaObjectList();
 
-        Arrays.toString(genreHalløj.getGenreArray());
+        Arrays.toString(dataReaderGenre.getGenreArray());
 
-        JMenuItem nyGenreItem;
         JMenuItem alleGenreItm = new JMenuItem("Alle");
         genreMenu.add(alleGenreItm);
 
-        for (String currentGenre : genreHalløj.getGenreArray()) {
-            nyGenreItem = new JMenuItem(currentGenre);
-            genreMenu.add(currentGenre);
+        alleGenreItm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                allBooleansFalse();
+                truealle();
+
+                buildView();
+            }
+        });
+
+        for (String currentGenre : dataReaderGenre.getGenreArray()) {
+            JMenuItem nyGenreItem = new JMenuItem(currentGenre);
+            genreMenu.add(nyGenreItem);
+            nyGenreItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    genreMedier = new ArrayList<>();
+                    genreMedier.removeAll(genreMedier);
+
+                    allBooleansFalse();
+                    truealle();
+
+                    getListOfAllMedia();
+
+                    buildView();
+
+                    for (int i = 0; i < medier.size(); i++) {
+                        List<String> genreString = medier.get(i).getGenre();
+
+                        if (genreString.toString().contains(nyGenreItem.getText())) {
+
+                            //System.out.println("Er vi i IF???");
+                            genreMedier.add(medier.get(i));
+
+                        }
+
+                    }
+                    allBooleansFalse();
+                    trueGenre();
+
+                    buildView();
+                }
+            });
         }
 
         return genreMenu;
     }
+
     private JMenu createMedierMenu() {
         JMenu medieMenu = new JMenu("Medier");
         JMenuItem alleItem = new JMenuItem("Alle");
@@ -270,9 +389,7 @@ public class View implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                falsetestFilm();
-                falsetestSerier();
-                falseTestSingle();
+                allBooleansFalse();
                 truealle();
 
                 buildView();
@@ -286,9 +403,7 @@ public class View implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                falsetestSerier();
-                falsetestAlle();
-                falseTestSingle();
+                allBooleansFalse();
                 truefilm();
 
                 buildView();
@@ -302,9 +417,7 @@ public class View implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                falsetestAlle();
-                falsetestFilm();
-                falseTestSingle();
+                allBooleansFalse();
                 trueserier();
 
                 buildView();
@@ -327,6 +440,14 @@ public class View implements ActionListener {
         return serieBoolean = true;
     }
 
+    public boolean trueSingle() {
+        return singleBoolean = true;
+    }
+
+    public boolean trueMineFavoritter() {
+        return mineFavoritterBoolean = true;
+    }
+
 
     public boolean falsetestAlle(){
         return alleBoolean = false;
@@ -336,25 +457,78 @@ public class View implements ActionListener {
         return filmBoolean = false;
     }
 
-    public boolean falsetestSerier(){
-
-        return serieBoolean = false;
-    }
-
-    public boolean trueSingle() {
-        return singleBoolean = true;
-    }
+    public boolean falsetestSerier(){ return serieBoolean = false; }
 
     public boolean falseTestSingle() {
         return singleBoolean = false;
     }
 
+    public boolean falseMineFavoritter() {
+        return mineFavoritterBoolean = false;
+    }
 
+    public boolean addedToFavorites() {
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        //frame.setBackground(Color.red);
+        return favoritKnap = true;
+    }
+
+    public boolean notAddedToFavorites() {
+
+        return favoritKnap = false;
+    }
+
+    public void allBooleansFalse() {
+
+        falsetestAlle();        //1
+        falsetestFilm();        //2
+        falseTestSingle();      //3
+        falseTestGenre();       //4
+        falseMineFavoritter();  //5
+        falsetestSerier();      //6
 
     }
 
-}
+    public boolean trueGenre() {
+        return genreBoolean = true;
+    }
+
+    public boolean falseTestGenre() {
+        return genreBoolean = false;
+    }
+
+
+    /*
+    public void NoMediaFoundMethod(NoMediaFoundException ex) {
+
+        JFrame frameNoMediaException = new JFrame("Hovsa!");
+        container = frame.getContentPane();
+        //container = frameNoMediaException.getContentPane();
+        font = new Font("Sans-Serif", Font.PLAIN, 60);
+        output = new JTextField("0");
+        JPanel panelNoMediaException = new JPanel();
+        container.setSize(100, 100);
+
+        JLabel label2 = new JLabel(("<html>" + ex.getMessage() + "</html>"));
+        Button buttonOk = new Button("Ok");
+        buttonOk.setSize(10, 10);
+
+        panelNoMediaException.add(label2);
+        panelNoMediaException.add(buttonOk);
+        panelNoMediaException.setLayout(new FlowLayout());
+
+        frameNoMediaException.setPreferredSize(new Dimension(400, 125));
+
+        frameNoMediaException.add(panelNoMediaException);
+        frameNoMediaException.pack();
+        frameNoMediaException.setLocationRelativeTo(null);
+
+        //Lav TRYk PÅ OK, OG DEN LUKKER. - MANGLER.
+        //
+
+        //frameNoMediaException.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        frameNoMediaException.setVisible(true);
+
+     */
+
+    }

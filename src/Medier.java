@@ -12,6 +12,7 @@ import java.util.List;
 
         private HashSet<String> allGenres;
 
+
         Medier (String title, String year, List <String> genre, String rating, String imgPath ){
             this.title = title;
             this.year = year;
@@ -20,7 +21,9 @@ import java.util.List;
             this.imgPath = imgPath;
             this.allGenres = allGenres;
 
+
         }
+
 
         public String getYear() {
             return year;
