@@ -132,7 +132,7 @@ public class View {
                 String title = medier.get(i).getTitle();
                 String specificMediaInfo = medier.get(i).toString();
 
-                //ACTIONLISTENER VED TRYK PÅ SPECIFIKT MEDIE - POP-UP DANNES
+                //ACTIONLISTENER VED TRYK PÅ SPECIFIKT MEDIE - POP-UP DANNES //
 
                 button.addActionListener(new ActionListener() {
                     @Override
@@ -147,7 +147,7 @@ public class View {
 
                         buttonPanelIndre.setLayout(new GridLayout(2,2, 2 ,5 ));
 
-                        JLabel label1 = new JLabel(("<html>" + specificMediaInfo + "</html>"));
+                        JLabel specifikMediaData = new JLabel(("<html>" + specificMediaInfo + "</html>"));
 
                         boolean favouriteButton = true;
 
@@ -158,7 +158,7 @@ public class View {
                         addToFavoritesButton.setSize(5,5);
                         JButton playButton = new JButton("Afspil");
 
-                        // ACTIONLISTENER VED TRYK PÅ "Afspil"-knap
+                        // ACTIONLISTENER VED TRYK PÅ "Afspil"-knap //
 
                         playButton.addActionListener(new ActionListener() {
                             @Override
@@ -170,7 +170,7 @@ public class View {
                             }
                         });
 
-                        // ACTIONLISTENER VED TRYK PÅ "Tilføj til favoritter"-knap
+                        // ACTIONLISTENER VED TRYK PÅ "Tilføj til favoritter"-knap //
 
                         addToFavoritesButton.addActionListener(new ActionListener() {
                             @Override
@@ -187,17 +187,12 @@ public class View {
                                             myFavouritesList.add(medier.get(i));
                                         }
 
-
-
-
                                     }
                                 }
-
-
                             }
                         });
 
-                        // ACTIONLISTENER VED TRYK PÅ "Fjern fra favoritter"-KNAP.
+                        // ACTIONLISTENER VED TRYK PÅ "Fjern fra favoritter"-KNAP //
 
                         removeFromFavoritesButton.addActionListener(new ActionListener() {
                             @Override
@@ -212,7 +207,7 @@ public class View {
                             }
                         });
 
-
+                        //FÆRDIGGØRELSE AF POP-UP //
                         buttonPanelIndre.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
                         JLabel billede = null;
@@ -222,7 +217,7 @@ public class View {
                             throw new RuntimeException(ex);
                         }
                         buttonPanelIndre.add(billede);
-                        buttonPanelIndre.add(label1);
+                        buttonPanelIndre.add(specifikMediaData);
                         buttonPanelIndre.add(addToFavoritesButton);
                         buttonPanelIndre.add(removeFromFavoritesButton);
                         buttonPanelIndre.add(playButton);
@@ -254,21 +249,23 @@ public class View {
     }
     private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
-        JButton favoritButton = new JButton("Mine Favoritter");
-        menuBar.add(favoritButton);
+        JButton myFavouritesButton = new JButton("Mine Favoritter");
+        menuBar.add(myFavouritesButton);
         menuBar.add(createMedierMenu());
         menuBar.add(createGenreMenu());
 
-        favoritButton.addActionListener(new ActionListener() {
+        // ACTIONLISTENER VED TRYK PÅ KNAPPEN "Mine favoritter" //
+        myFavouritesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 allBooleansFalse();
-                trueMineFavoritter();
+                trueMyFavourites ();
 
                 buildView();
             }
         });
 
+        // SØGEFELT //
         menuBar.add(new JSeparator());
         menuBar.add(Box.createHorizontalGlue());
         JTextField txt;
@@ -276,6 +273,7 @@ public class View {
         txt.setMaximumSize(txt.getPreferredSize());
         menuBar.add(txt);
 
+        // ACTIONLISTENER VED SØGNING I SØGEFELTET //
         txt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -316,6 +314,7 @@ public class View {
         return menuBar;
 
     }
+    // GENRE-MENU //
     private JMenu createGenreMenu() {
         JMenu genreMenu = new JMenu("Genre");
 
@@ -326,7 +325,7 @@ public class View {
 
         JMenuItem alleGenreItm = new JMenuItem("Alle");
         genreMenu.add(alleGenreItm);
-
+        // ACTIONLISTENER VED TRYK PÅ "Alle" //
         alleGenreItm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -341,6 +340,8 @@ public class View {
         for (String currentGenre : dataReaderGenre.getGenreArray()) {
             JMenuItem nyGenreItem = new JMenuItem(currentGenre);
             genreMenu.add(nyGenreItem);
+
+            // ACTIONLISTENER VED TRYK PÅ SPECIFIK GENRE
             nyGenreItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -360,7 +361,6 @@ public class View {
 
                         if (genreString.toString().contains(nyGenreItem.getText())) {
 
-                            //System.out.println("Er vi i IF???");
                             genreMedier.add(medier.get(i));
 
                         }
@@ -377,11 +377,13 @@ public class View {
         return genreMenu;
     }
 
+    // Medier menu //
     private JMenu createMedierMenu() {
         JMenu medieMenu = new JMenu("Medier");
         JMenuItem alleItem = new JMenuItem("Alle");
         medieMenu.add(alleItem);
 
+        //ACTION LISTENER VED TRYK PÅ "Alle" //
         alleItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -396,6 +398,9 @@ public class View {
 
         JMenuItem filmItem = new JMenuItem("Film");
         medieMenu.add(filmItem);
+
+        //ACTION LISTENER VED TRYK PÅ "Film" //
+
         filmItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -407,6 +412,8 @@ public class View {
 
             }
         });
+
+        //ACTION LISTENER VED TRYK PÅ "Serier" //
 
         JMenuItem serieItem = new JMenuItem("Serier");
         medieMenu.add(serieItem);
@@ -425,6 +432,8 @@ public class View {
         return medieMenu;
     }
 
+
+    // BOOLEANS //
     public boolean truealle(){
         return alleBoolean = true;
     }
@@ -441,7 +450,7 @@ public class View {
         return singleBoolean = true;
     }
 
-    public boolean trueMineFavoritter() {
+    public boolean trueMyFavourites () {
         return myFavouritesBoolean = true;
     }
 
