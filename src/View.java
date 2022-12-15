@@ -1,3 +1,6 @@
+import CustomExceptions.AddToFavoritesException;
+import CustomExceptions.NoMediaFoundException;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +34,6 @@ public class View {
     boolean serieBoolean;
     boolean singleBoolean;
     boolean genreBoolean;
-    boolean favouriteButton;
     boolean myFavouritesBoolean;
 
 
@@ -124,11 +126,6 @@ public class View {
 
                 buttonPanel.add(button);
 
-                // Gør knappen usynlig. Hvad gør disse?**
-                button.setOpaque(false);
-                button.setContentAreaFilled(false);
-                button.setBorderPainted(false);
-
                 String title = medier.get(i).getTitle();
                 String specificMediaInfo = medier.get(i).toString();
 
@@ -159,28 +156,37 @@ public class View {
                     // ACTIONLISTENER VED TRYK PÅ "Afspil"-knap //
 
                     playButton.addActionListener(e1 -> {
-
                         playButton.setBackground(Color.RED);
                         playButton.setOpaque(true);
                         playButton.setBorderPainted(false);
                     });
 
+
                     // ACTIONLISTENER VED TRYK PÅ "Tilføj til favoritter"-knap //
 
-                    addToFavoritesButton.addActionListener(e12 -> {
+                    addToFavoritesButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
 
-                        for (int i1 = 0; i1 < medier.size(); i1++) {
-                            String titlecurrent = medier.get(i1).getTitle();
+                            try {
+                                for (int i = 0; i < medier.size(); i++) {
+                                    String titlecurrent = medier.get(i).getTitle();
 
-                            if (titlecurrent.equals(title)) {
+                                    if (titlecurrent.equals(title)) {
 
-                                if(myFavouritesList.contains(medier.get(i1))){
-                                    System.out.println("MÅ MAN IKKE!!!");
-                                } else {
-                                    myFavouritesList.add(medier.get(i1));
+                                        if (myFavouritesList.contains(medier.get(i))) {
+                                            throw new AddToFavoritesException("Hej med dig throw new");
+
+                                        } else {
+                                            myFavouritesList.add(medier.get(i));
+                                        }
+                                    }
                                 }
-
+                            } catch(AddToFavoritesException ex) {
+                                AddToFavortitesMethod();
                             }
+
+
                         }
                     });
 
@@ -231,7 +237,7 @@ public class View {
     }
 
 
-    // MENU-BAR //
+    //---- MENU-BAR -----//
     private void makeMenuBar (JFrame frame) {
         frame.setJMenuBar(createMenuBar());
     }
@@ -242,6 +248,10 @@ public class View {
         menuBar.add(createMedierMenu());
         menuBar.add(createGenreMenu());
 
+        menuBar.add(new JSeparator());
+        menuBar.add(Box.createHorizontalGlue());
+        menuBar.add(createSearchMenu());
+
         // ACTIONLISTENER VED TRYK PÅ KNAPPEN "Mine favoritter" //
         myFavouritesButton.addActionListener(e -> {
             allBooleansFalse();
@@ -250,52 +260,9 @@ public class View {
             buildView();
         });
 
-        // SØGEFELT //
-        menuBar.add(new JSeparator());
-        menuBar.add(Box.createHorizontalGlue());
-        JTextField txt;
-        txt = new JTextField("   Søg her...  ",25);
-        txt.setMaximumSize(txt.getPreferredSize());
-        menuBar.add(txt);
-
-        // ACTIONLISTENER VED SØGNING I SØGEFELTET //
-        txt.addActionListener(e -> {
-
-            singleMedie = new ArrayList<>();
-            singleMedie.removeAll(singleMedie);
-
-            allBooleansFalse();
-            truealle();
-
-            getListOfAllMedia();
-
-            buildView();
-
-            for (int i = 0; i < medier.size(); i++) {
-                String title = medier.get(i).getTitle();
-
-                if (txt.getText().equalsIgnoreCase(title)) {
-                    singleMedie.add(medier.get(i));
-                    //System.out.println("IF - TEKST : " + txt.getText() + " + " + title);
-
-                    allBooleansFalse();
-                    trueSingle();
-
-                    buildView();
-                }
-            }
-        });
-
-        txt.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                //super.mouseClicked(e);
-                txt.setText("");
-            }
-        });
         return menuBar;
-
     }
+
     // GENRE-MENU //
     private JMenu createGenreMenu() {
         JMenu genreMenu = new JMenu("Genre");
@@ -353,7 +320,7 @@ public class View {
         return genreMenu;
     }
 
-    // Medier menu //
+    // Medier-menu //
     private JMenu createMedierMenu() {
         JMenu medieMenu = new JMenu("Medier");
         JMenuItem alleItem = new JMenuItem("Alle");
@@ -399,6 +366,70 @@ public class View {
         return medieMenu;
     }
 
+    // Search-menu //
+    private JTextField createSearchMenu() {
+
+        JTextField txt;
+        txt = new JTextField("   Søg her...  ", 25);
+        txt.setMaximumSize(txt.getPreferredSize());
+
+        txt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                singleMedie = new ArrayList<>();
+                singleMedie.removeAll(singleMedie);
+
+                allBooleansFalse();
+                truealle();
+
+                buildView();
+
+                int optæller = 0;
+
+                try {
+
+                    for (int i = 0; i < medier.size(); i++) {
+                        String title = medier.get(i).getTitle();
+
+
+                        if (txt.getText().equalsIgnoreCase(title)) {
+                            singleMedie.add(medier.get(i));
+
+                            allBooleansFalse();
+                            trueSingle();
+
+                            buildView();
+
+                        } else {
+                            optæller = optæller + 1;
+
+                            if (optæller == 200) {
+                                throw new NoMediaFoundException("Hej");
+                            }
+                        }
+
+                    }
+                } catch(NoMediaFoundException ex) {
+                    NoMediaFoundMethod();
+                }
+
+            }
+        });
+
+        txt.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //super.mouseClicked(e);
+                txt.setText("");
+            }
+        });
+
+        return txt;
+    }
+
+
+    //----------//
 
     // BOOLEANS //
     public boolean truealle(){
@@ -421,8 +452,6 @@ public class View {
         return myFavouritesBoolean = true;
     }
 
-
-
     public boolean falsetestAlle(){
 
         return alleBoolean = false;
@@ -440,16 +469,6 @@ public class View {
 
     public boolean falseMineFavoritter() {
         return myFavouritesBoolean = false;
-    }
-
-    public boolean addedToFavorites() {
-
-        return favouriteButton = true;
-    }
-
-    public boolean notAddedToFavorites() {
-
-        return favouriteButton = false;
     }
 
     public void allBooleansFalse() {
@@ -472,20 +491,24 @@ public class View {
     }
 
 
-    /*
-    public void NoMediaFoundMethod(NoMediaFoundException ex) {
+    public void NoMediaFoundMethod() {
 
         JFrame frameNoMediaException = new JFrame("Hovsa!");
-        container = frame.getContentPane();
-        //container = frameNoMediaException.getContentPane();
+
         font = new Font("Sans-Serif", Font.PLAIN, 60);
         output = new JTextField("0");
         JPanel panelNoMediaException = new JPanel();
-        container.setSize(100, 100);
 
-        JLabel label2 = new JLabel(("<html>" + ex.getMessage() + "</html>"));
+        JLabel label2 = new JLabel(("<html>" + "Der findes ingen medier der matchede din søgning" + "</html>"));
         Button buttonOk = new Button("Ok");
         buttonOk.setSize(10, 10);
+
+        buttonOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frameNoMediaException.setVisible(false);
+            }
+        });
 
         panelNoMediaException.add(label2);
         panelNoMediaException.add(buttonOk);
@@ -497,13 +520,43 @@ public class View {
         frameNoMediaException.pack();
         frameNoMediaException.setLocationRelativeTo(null);
 
-        //Lav TRYk PÅ OK, OG DEN LUKKER. - MANGLER.
-        //
-
-        //frameNoMediaException.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
         frameNoMediaException.setVisible(true);
-
-     */
-
     }
+
+
+    public void AddToFavortitesMethod() {
+
+        JFrame addToFavortitesExceptionFrame  = new JFrame("Hovsa!");
+
+        font = new Font("Sans-Serif", Font.PLAIN, 60);
+        output = new JTextField("0");
+        JPanel panelAddToFavortitesEx = new JPanel();
+
+        JLabel label2 = new JLabel(("<html>" + "Mediet er allerede tilføjet til favoritlisten" + "</html>"));
+        Button buttonOk = new Button("Ok");
+        buttonOk.setSize(10, 10);
+
+        panelAddToFavortitesEx.add(label2);
+        panelAddToFavortitesEx.add(buttonOk);
+
+        buttonOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addToFavortitesExceptionFrame.setVisible(false);
+            }
+        });
+
+        panelAddToFavortitesEx.setLayout(new FlowLayout());
+
+        addToFavortitesExceptionFrame.setPreferredSize(new Dimension(400, 125));
+
+        addToFavortitesExceptionFrame.add(panelAddToFavortitesEx);
+        addToFavortitesExceptionFrame.pack();
+        addToFavortitesExceptionFrame.setLocationRelativeTo(null);
+
+        addToFavortitesExceptionFrame.setVisible(true);
+    }
+
+}
+
+
